@@ -82,8 +82,8 @@ export default function SwipeDeck({
 
   return (
     <div className="flex flex-col items-center w-full h-full">
-      {/* Card — full width, tall like Tinder */}
-      <div className="relative w-full flex-1" style={{ minHeight: "calc(100vh - 7rem)" }}>
+      {/* Card — full width on mobile, constrained on desktop */}
+      <div className="relative w-full md:max-w-sm md:mx-auto flex-1" style={{ minHeight: "calc(100vh - 7rem)" }}>
         {/* Background card for stacking effect */}
         <div className="absolute inset-0 bg-surface-container-high rounded-2xl scale-[0.97] translate-y-3 opacity-40 blur-[2px] -z-10" />
         <SwipeCard
