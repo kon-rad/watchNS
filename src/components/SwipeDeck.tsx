@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import SwipeCard from "./SwipeCard";
-import { getVideosForSwipe, toggleFavorite } from "@/actions/videos";
+import { getVideosForSwipe, toggleFavorite, incrementViewCount } from "@/actions/videos";
 import type { VideoWithCreator } from "@/actions/videos";
 import Link from "next/link";
 
@@ -19,6 +19,13 @@ export default function SwipeDeck({
 
   const currentVideo = videos[currentIndex];
   const remaining = videos.length - currentIndex;
+
+  // Track view when a new card becomes current
+  useEffect(() => {
+    if (currentVideo) {
+      incrementViewCount(currentVideo.id);
+    }
+  }, [currentVideo?.id]);
 
   useEffect(() => {
     if (remaining <= 3 && remaining > 0 && !loadingRef.current && !exhaustedRef.current) {

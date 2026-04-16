@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const navItems = [
   { href: "/", label: "Home", icon: "home" },
   { href: "/swipe", label: "Swipe", icon: "swipe" },
+  { href: "/browse", label: "Browse", icon: "browse" },
   { href: "/favorites", label: "Favorites", icon: "heart" },
 ];
 
@@ -22,6 +23,16 @@ function NavIcon({ icon, filled }: { icon: string; filled: boolean }) {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 2v20M2 12l4-4m0 8l-4-4M22 12l-4-4m0 8l4-4" />
+      </svg>
+    );
+  }
+  if (icon === "browse") {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7" />
+        <rect x="14" y="3" width="7" height="7" />
+        <rect x="14" y="14" width="7" height="7" />
+        <rect x="3" y="14" width="7" height="7" />
       </svg>
     );
   }

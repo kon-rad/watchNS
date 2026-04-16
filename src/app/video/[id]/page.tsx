@@ -1,4 +1,4 @@
-import { getVideoById } from "@/actions/videos";
+import { getVideoById, incrementViewCount } from "@/actions/videos";
 import { notFound } from "next/navigation";
 import VideoDetailClient from "./VideoDetailClient";
 
@@ -13,6 +13,8 @@ export default async function VideoDetailPage({
 
   const video = await getVideoById(videoId);
   if (!video) notFound();
+
+  await incrementViewCount(videoId);
 
   return <VideoDetailClient video={video} />;
 }

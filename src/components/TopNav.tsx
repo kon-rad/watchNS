@@ -29,6 +29,12 @@ export default function TopNav() {
             Swipe
           </Link>
           <Link
+            href="/browse"
+            className="text-on-surface font-headline tracking-tight font-bold hover:bg-surface-bright/40 transition-colors px-3 py-1 rounded-md"
+          >
+            Browse
+          </Link>
+          <Link
             href="/favorites"
             className="text-on-surface font-headline tracking-tight font-bold hover:bg-surface-bright/40 transition-colors px-3 py-1 rounded-md"
           >

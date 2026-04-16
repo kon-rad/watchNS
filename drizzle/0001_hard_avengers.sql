@@ -1,0 +1,1 @@
+ALTER TABLE `videos` ADD `view_count` integer DEFAULT 0 NOT NULL;
