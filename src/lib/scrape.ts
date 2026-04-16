@@ -171,6 +171,38 @@ export async function scrapeChannelMeta(
     }
   }
 
+  if (platform === "tiktok") {
+    try {
+      const cleanUrl = url.split("?")[0].replace(/\/+$/, "");
+      const res = await fetch(cleanUrl, {
+        signal: AbortSignal.timeout(10000),
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "Accept-Language": "en-US,en;q=0.9",
+        },
+      });
+      if (!res.ok) return { name: null, avatarUrl: null };
+      const html = await res.text();
+      const match = html.match(
+        /<script id="__UNIVERSAL_DATA_FOR_REHYDRATION__" type="application\/json">(.*?)<\/script>/
+      );
+      if (match) {
+        const data = JSON.parse(match[1]);
+        const user =
+          data?.__DEFAULT_SCOPE__?.["webapp.user-detail"]?.userInfo?.user;
+        if (user) {
+          return {
+            name: user.nickname || user.uniqueId || null,
+            avatarUrl: user.avatarLarger || user.avatarMedium || null,
+          };
+        }
+      }
+    } catch {
+      // fall through
+    }
+  }
+
   const meta = await scrapeMetaTags(url);
   return {
     name: meta.title || null,
@@ -262,8 +294,12 @@ export async function scrapeChannelVideoUrls(
 
     if (platform === "tiktok") {
       const profileUrl = channelUrl.split("?")[0].replace(/\/+$/, "");
+      const username = profileUrl.match(/@([\w.]+)/)?.[1];
+      if (!username) return [];
 
-      const res = await fetch(profileUrl, {
+      // Use the embed page which returns video IDs without authentication
+      const embedUrl = `https://www.tiktok.com/embed/@${username}`;
+      const res = await fetch(embedUrl, {
         signal: AbortSignal.timeout(15000),
         headers: browserHeaders,
       });
@@ -275,8 +311,6 @@ export async function scrapeChannelVideoUrls(
         /\/video\/(\d{15,25})/g,
         /"id":"(\d{15,25})"/g,
       ];
-
-      const username = profileUrl.match(/@([\w.]+)/)?.[1];
 
       for (const pattern of patterns) {
         for (const match of html.matchAll(pattern)) {
@@ -290,7 +324,7 @@ export async function scrapeChannelVideoUrls(
         .slice(0, limit)
         .map(
           (id) =>
-            `https://www.tiktok.com/@${username || "user"}/video/${id}`
+            `https://www.tiktok.com/@${username}/video/${id}`
         );
     }
 
