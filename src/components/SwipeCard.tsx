@@ -9,19 +9,6 @@ const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 const SWIPE_THRESHOLD = 100;
 
-function getPlatformLabel(platform: string) {
-  switch (platform) {
-    case "youtube":
-      return "YouTube";
-    case "tiktok":
-      return "TikTok";
-    case "instagram":
-      return "Instagram";
-    default:
-      return platform;
-  }
-}
-
 export default function SwipeCard({
   video,
   onSwipeLeft,
@@ -117,7 +104,7 @@ export default function SwipeCard({
             </div>
           )}
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
           {/* Play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <button
@@ -150,54 +137,13 @@ export default function SwipeCard({
         </span>
       </div>
 
-      {/* Metadata overlay */}
-      <div className="absolute bottom-0 left-0 w-full p-6 space-y-3 pointer-events-none">
-        <div className="flex items-center gap-3">
-          {video.creatorAvatar ? (
-            <img
-              src={video.creatorAvatar}
-              alt={video.creatorName}
-              className="w-10 h-10 rounded-full border-2 border-primary object-cover"
-            />
-          ) : (
-            <div className="w-10 h-10 rounded-full border-2 border-primary bg-surface-container-high flex items-center justify-center text-primary font-bold text-sm">
-              {video.creatorName[0]?.toUpperCase()}
-            </div>
-          )}
-          <div>
-            <p className="font-headline font-bold text-white">
-              {video.creatorName}
-            </p>
-            <span className="bg-primary/20 text-primary-container text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-              {video.platform}
-            </span>
-          </div>
-        </div>
-        {video.title && (
-          <p className="text-on-surface text-base font-medium leading-tight line-clamp-2">
-            {video.title}
-          </p>
-        )}
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1.5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="text-tertiary">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-            <span className="text-sm font-bold text-white">
-              {video.likeCount}
-            </span>
-          </div>
-        </div>
-      </div>
-
       {/* Link-out button */}
       <a
         href={video.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-6 right-6 pointer-events-auto flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full text-white/80 text-xs font-bold hover:bg-white/20 transition-colors border border-white/10"
+        className="absolute bottom-4 right-4 pointer-events-auto flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full text-white/80 text-xs font-bold hover:bg-white/20 transition-colors border border-white/10"
       >
-        {getPlatformLabel(video.platform)}
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
           <polyline points="15 3 21 3 21 9" />

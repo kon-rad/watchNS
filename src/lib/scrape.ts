@@ -85,8 +85,46 @@ export async function scrapeVideoMeta(
   }
 
   if (platform === "instagram") {
-    // Instagram oEmbed requires a Meta app token, likely to fail
-    // Fall back to meta tag scraping
+    // Try the Instagram oEmbed-like info endpoint
+    try {
+      const shortcode = url.match(/\/(reel|p)\/([A-Za-z0-9_-]+)/)?.[2];
+      if (shortcode) {
+        const res = await fetch(
+          `https://www.instagram.com/api/v1/media/${shortcode}/info/`,
+          {
+            signal: AbortSignal.timeout(5000),
+            headers: {
+              "User-Agent":
+                "Instagram 275.0.0.27.98 Android (33/13; 420dpi; 1080x2400; Google/google; Pixel 7; panther; panther; en_US; 458229258)",
+              "X-IG-App-ID": "936619743392459",
+            },
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          const item = data?.items?.[0];
+          if (item) {
+            const caption = item.caption?.text || null;
+            const thumb =
+              item.image_versions2?.candidates?.[0]?.url ||
+              item.carousel_media?.[0]?.image_versions2?.candidates?.[0]?.url ||
+              null;
+            return {
+              title: caption?.split("\n")[0]?.slice(0, 100) || null,
+              thumbnailUrl: thumb,
+              authorName: item.user?.full_name || item.user?.username || null,
+              authorUrl: item.user?.username
+                ? `https://www.instagram.com/${item.user.username}/`
+                : null,
+              authorAvatar: item.user?.profile_pic_url || null,
+            };
+          }
+        }
+      }
+    } catch {
+      // fall through
+    }
+    // Fallback to meta tag scraping
     const meta = await scrapeMetaTags(url);
     return {
       title: meta.title || null,
@@ -104,6 +142,35 @@ export async function scrapeChannelMeta(
   platform: Platform,
   url: string
 ): Promise<{ name: string | null; avatarUrl: string | null }> {
+  if (platform === "instagram") {
+    try {
+      const cleanUrl = url.split("?")[0].replace(/\/+$/, "");
+      const username = cleanUrl.split("/").pop();
+      if (!username) return { name: null, avatarUrl: null };
+
+      const res = await fetch(
+        `https://www.instagram.com/api/v1/users/web_profile_info/?username=${username}`,
+        {
+          signal: AbortSignal.timeout(10000),
+          headers: {
+            "User-Agent":
+              "Instagram 275.0.0.27.98 Android (33/13; 420dpi; 1080x2400; Google/google; Pixel 7; panther; panther; en_US; 458229258)",
+            "X-IG-App-ID": "936619743392459",
+          },
+        }
+      );
+      if (!res.ok) return { name: null, avatarUrl: null };
+      const data = await res.json();
+      const user = data?.data?.user;
+      return {
+        name: user?.full_name || username,
+        avatarUrl: user?.profile_pic_url_hd || user?.profile_pic_url || null,
+      };
+    } catch {
+      return { name: null, avatarUrl: null };
+    }
+  }
+
   const meta = await scrapeMetaTags(url);
   return {
     name: meta.title || null,
@@ -114,9 +181,9 @@ export async function scrapeChannelMeta(
 export async function scrapeChannelVideoUrls(
   platform: Platform,
   channelUrl: string,
-  limit: number = 10
+  limit: number = 50
 ): Promise<string[]> {
-  const headers = {
+  const browserHeaders = {
     "User-Agent":
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     "Accept-Language": "en-US,en;q=0.9",
@@ -130,8 +197,8 @@ export async function scrapeChannelVideoUrls(
       }
 
       const res = await fetch(videosUrl, {
-        signal: AbortSignal.timeout(10000),
-        headers,
+        signal: AbortSignal.timeout(15000),
+        headers: browserHeaders,
       });
       if (!res.ok) return [];
       const html = await res.text();
@@ -156,54 +223,59 @@ export async function scrapeChannelVideoUrls(
     }
 
     if (platform === "instagram") {
-      // Strip query params for a clean profile URL
-      const profileUrl = channelUrl.split("?")[0].replace(/\/+$/, "");
+      // Extract username from URL
+      const cleanUrl = channelUrl.split("?")[0].replace(/\/+$/, "");
+      const username = cleanUrl.split("/").pop();
+      if (!username) return [];
 
-      const res = await fetch(profileUrl + "/", {
-        signal: AbortSignal.timeout(10000),
-        headers,
-      });
-      if (!res.ok) return [];
-      const html = await res.text();
-
-      const reelIds = new Set<string>();
-      // Instagram embeds reel/post shortcodes in the HTML
-      const patterns = [
-        /\/reel\/([A-Za-z0-9_-]+)/g,
-        /\/p\/([A-Za-z0-9_-]+)/g,
-      ];
-
-      for (const pattern of patterns) {
-        for (const match of html.matchAll(pattern)) {
-          reelIds.add(match[1]);
-          if (reelIds.size >= limit) break;
+      // Use Instagram's web API with the public app ID
+      const res = await fetch(
+        `https://www.instagram.com/api/v1/users/web_profile_info/?username=${username}`,
+        {
+          signal: AbortSignal.timeout(15000),
+          headers: {
+            "User-Agent":
+              "Instagram 275.0.0.27.98 Android (33/13; 420dpi; 1080x2400; Google/google; Pixel 7; panther; panther; en_US; 458229258)",
+            "X-IG-App-ID": "936619743392459",
+          },
         }
-        if (reelIds.size >= limit) break;
-      }
+      );
+      if (!res.ok) return [];
 
-      return [...reelIds]
+      const data = await res.json();
+      const edges =
+        data?.data?.user?.edge_owner_to_timeline_media?.edges || [];
+
+      return edges
+        .filter(
+          (e: Record<string, Record<string, string>>) =>
+            e.node?.__typename === "GraphVideo" ||
+            e.node?.__typename === "GraphSidecar" ||
+            e.node?.is_video
+        )
         .slice(0, limit)
-        .map((id) => `https://www.instagram.com/reel/${id}/`);
+        .map(
+          (e: Record<string, Record<string, string>>) =>
+            `https://www.instagram.com/reel/${e.node.shortcode}/`
+        );
     }
 
     if (platform === "tiktok") {
       const profileUrl = channelUrl.split("?")[0].replace(/\/+$/, "");
 
       const res = await fetch(profileUrl, {
-        signal: AbortSignal.timeout(10000),
-        headers,
+        signal: AbortSignal.timeout(15000),
+        headers: browserHeaders,
       });
       if (!res.ok) return [];
       const html = await res.text();
 
       const videoIds = new Set<string>();
-      // TikTok includes video IDs in the page HTML/JSON
       const patterns = [
         /\/video\/(\d{15,25})/g,
         /"id":"(\d{15,25})"/g,
       ];
 
-      // Extract the username from the URL for building full video URLs
       const username = profileUrl.match(/@([\w.]+)/)?.[1];
 
       for (const pattern of patterns) {

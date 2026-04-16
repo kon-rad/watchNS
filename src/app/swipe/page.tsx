@@ -5,7 +5,7 @@ export default async function SwipePage() {
   const initialVideos = await getVideosForSwipe();
 
   return (
-    <div className="h-screen flex flex-col items-center relative overflow-hidden">
+    <div className="fixed inset-0 top-14 bottom-16 md:bottom-0 flex flex-col overflow-hidden">
       <SwipeDeck initialVideos={initialVideos} />
     </div>
   );
