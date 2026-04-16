@@ -1,6 +1,11 @@
 import Link from "next/link";
+import { getRandomVideo } from "@/actions/videos";
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const randomVideo = await getRandomVideo();
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -19,7 +24,7 @@ export default function HomePage() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary">
               Pulse
             </span>{" "}
-            of Your School.
+            of Network School.
           </h1>
           <p className="text-xl text-on-surface-variant max-w-xl leading-relaxed font-body">
             WatchNS captures the rhythmic energy of the Network School community.
@@ -36,13 +41,32 @@ export default function HomePage() {
           </div>
         </div>
         <div className="lg:w-5/12 relative">
-          <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden editorial-shadow transform rotate-3">
-            <div className="w-full h-full bg-gradient-to-br from-surface-container-high to-surface-container flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-primary/40">
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
-            </div>
+          <Link
+            href={randomVideo ? `/video/${randomVideo.id}` : "/swipe"}
+            className="block relative w-full aspect-[4/5] rounded-xl overflow-hidden editorial-shadow transform rotate-3 group cursor-pointer"
+          >
+            {randomVideo?.thumbnailUrl ? (
+              <img
+                src={randomVideo.thumbnailUrl}
+                alt={randomVideo.title || "Featured video"}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-surface-container-high to-surface-container flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-primary/40">
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+              </div>
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
+            {/* Play button overlay */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center group-hover:bg-white/20 group-hover:scale-110 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="currentColor" className="text-white ml-1">
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+              </div>
+            </div>
             {/* Floating Card */}
             <div className="absolute bottom-8 left-8 right-8 glass-panel p-6 rounded-lg border border-outline-variant/20">
               <div className="flex items-center gap-4 mb-3">
@@ -55,16 +79,18 @@ export default function HomePage() {
                   <p className="text-xs font-bold uppercase tracking-widest text-tertiary">
                     Trending Now
                   </p>
-                  <p className="font-bold text-on-surface">
-                    Community Highlights
+                  <p className="font-bold text-on-surface line-clamp-1">
+                    {randomVideo?.title || "Community Highlights"}
                   </p>
                 </div>
               </div>
-              <div className="h-1.5 w-full bg-outline-variant/30 rounded-full overflow-hidden">
-                <div className="h-full w-2/3 bg-tertiary rounded-full" />
-              </div>
+              {randomVideo && (
+                <p className="text-xs text-on-surface-variant">
+                  by {randomVideo.creatorName}
+                </p>
+              )}
             </div>
-          </div>
+          </Link>
           {/* Decorative glows */}
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/20 blur-[80px] rounded-full" />
           <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-tertiary/10 blur-[100px] rounded-full" />

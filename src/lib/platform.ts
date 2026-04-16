@@ -15,7 +15,7 @@ export function parseVideoUrl(rawUrl: string): ParsedUrl | null {
     return null;
   }
 
-  const host = url.hostname.replace("www.", "").replace("m.", "");
+  const host = url.hostname.replace(/^(www|m)\./, "");
 
   // YouTube
   if (host === "youtube.com" || host === "youtu.be") {
@@ -68,7 +68,7 @@ export function parseVideoUrl(rawUrl: string): ParsedUrl | null {
 export function getEmbedUrl(platform: Platform, originalUrl: string): string | null {
   try {
     const url = new URL(originalUrl);
-    const host = url.hostname.replace("www.", "").replace("m.", "");
+    const host = url.hostname.replace(/^(www|m)\./, "");
 
     if (platform === "youtube") {
       let videoId: string | null = null;

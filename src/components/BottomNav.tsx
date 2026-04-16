@@ -48,7 +48,7 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-8 pb-6 pt-4 bg-surface-container-low/60 backdrop-blur-xl z-50 rounded-t-[3rem] shadow-[0_-10px_40px_rgba(184,159,255,0.15)]">
+    <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-6 pb-3 pt-2 bg-surface-container-low/60 backdrop-blur-xl z-50 rounded-t-[2rem] shadow-[0_-10px_40px_rgba(184,159,255,0.15)]">
       {navItems.map((item) => {
         const isActive =
           item.href === "/"
@@ -58,14 +58,14 @@ export default function BottomNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex flex-col items-center justify-center p-3 transition-all active:scale-90 ${
+            className={`flex flex-col items-center justify-center p-2 transition-all active:scale-90 ${
               isActive
                 ? "bg-gradient-to-br from-primary to-primary-dim text-on-primary-fixed rounded-full"
                 : "text-on-surface/60 hover:text-primary"
             }`}
           >
             <NavIcon icon={item.icon} filled={isActive} />
-            <span className="font-label text-[10px] uppercase tracking-widest font-bold mt-1">
+            <span className="font-label text-[9px] uppercase tracking-widest font-bold mt-0.5">
               {item.label}
             </span>
           </Link>
