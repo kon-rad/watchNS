@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Favorites - WatchNS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Be_Vietnam_Pro:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#c492fe",
+                        "inverse-surface": "#fff7ff",
+                        "on-secondary-fixed-variant": "#67389d",
+                        "secondary-container": "#5d2c92",
+                        "on-tertiary-container": "#59002b",
+                        "outline-variant": "#524067",
+                        "surface-container-high": "#2b1345",
+                        "surface-dim": "#16052a",
+                        "surface-container-low": "#1c0832",
+                        "error": "#ff6e84",
+                        "primary-container": "#ac8eff",
+                        "on-primary-container": "#2a0070",
+                        "tertiary-fixed-dim": "#f57ca5",
+                        "surface": "#16052a",
+                        "tertiary-fixed": "#ff8db2",
+                        "surface-tint": "#b89fff",
+                        "on-tertiary": "#6a0936",
+                        "surface-container": "#240e3b",
+                        "on-secondary-container": "#e2c5ff",
+                        "surface-bright": "#391e58",
+                        "on-error-container": "#ffb2b9",
+                        "on-surface-variant": "#b9a2d0",
+                        "surface-container-highest": "#32194e",
+                        "secondary-fixed": "#e3c6ff",
+                        "on-tertiary-fixed-variant": "#70103b",
+                        "outline": "#826d98",
+                        "primary-dim": "#8254f4",
+                        "on-primary": "#37008e",
+                        "on-primary-fixed": "#000000",
+                        "tertiary-dim": "#ef77a0",
+                        "error-dim": "#d73357",
+                        "surface-variant": "#32194e",
+                        "on-tertiary-fixed": "#380019",
+                        "inverse-on-surface": "#604d75",
+                        "primary": "#b89fff",
+                        "on-surface": "#f1dfff",
+                        "inverse-primary": "#6c3add",
+                        "on-secondary": "#3e0174",
+                        "primary-fixed": "#ac8eff",
+                        "on-primary-fixed-variant": "#350088",
+                        "primary-fixed-dim": "#a07dff",
+                        "error-container": "#a70138",
+                        "background": "#16052a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Be Vietnam Pro"],
+                        "label": ["Be Vietnam Pro"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #16052a;
+            color: #f1dfff;
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#16052a]/60 backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="portrait of a young student with a friendly smile, soft natural lighting, high-end digital photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIgcnefgpk0B0FSR4_Lg18iZjAxsux5_9r92xWZfGFtIzMAMvNKrydvZ1uWO09RZRqyjbjtZiKP-7SQzXcpK3L9oLPtgRZUS-2cJ5kAKGSPbK0znGVSsuvRQtlwWAurTA8gsvku_ZEI8AzMJqKjPGeR8C9dHjJKrSDjVrGeoNswNo1OBdcF6ezaxv21gS_oAyH2Myiu5Pqafe1ZW5ykGktMCedVJ1m9pFtTks_eP23j6stQXw4ea-OUm1D0k-kA5kPU8fB3ZZMCcyK"/>
+</div>
+<span class="text-2xl font-black text-[#f1dfff] tracking-tighter font-['Plus_Jakarta_Sans']">WatchNS</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-[#391e58]/40 transition-colors text-[#b89fff] active:scale-95 duration-200 ease-in-out">
+<span class="material-symbols-outlined" data-icon="add_link">add_link</span>
+</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto min-h-screen">
+<!-- Hero Section / Editorial Header -->
+<section class="mb-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<span class="label-md uppercase tracking-[0.2em] text-primary font-bold text-xs mb-2 block">Curated Collection</span>
+<h1 class="text-5xl md:text-7xl font-headline font-extrabold tracking-tighter text-on-surface">My Favorites</h1>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant bg-surface-container-low px-6 py-3 rounded-full">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-bold text-lg">24 Saved</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid of Favorites -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Featured Favorite (Asymmetric Large Card) -->
+<div class="lg:col-span-2 group relative overflow-hidden rounded-xl bg-surface-container-high aspect-video md:aspect-[21/9]">
+<img alt="Campus Life Video" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="cinematic shot of university students walking through a modern glass-walled campus courtyard at sunset, golden lens flare" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbnMN4kJXi-Ij6winfzxxMx_BnQKED_vd4_KVJ2yXoNQ5uSEnB0md_cOY5yQa1vb-9viJFbsT_wJS3Dku70pm6r42hjFom_HerKsugHQaAiQwDHwIMc_OGYfWMvjUk5UcyWUKpMYV9ZId1QfDSTxdNvLR1Gbi3Q8NLAkZ4twproeUJl0iybZpgiri5gQxX2KMm4hnqXT8sNWQRFD7LdSZld-QFK7tuPywhiL72jF5UJmogRXnnrJyQsI1FY2dgWIt2qSi_FugdE2i_"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
+<div class="absolute inset-0 flex flex-col justify-end p-8">
+<div class="flex items-center gap-3 mb-4">
+<span class="bg-tertiary text-on-tertiary-fixed font-bold text-[10px] uppercase tracking-widest px-3 py-1 rounded-full">Most Played</span>
+<span class="text-on-surface-variant text-sm">2 days ago</span>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<h2 class="text-3xl font-headline font-bold text-on-surface mb-1">Varsity Finals Highlights</h2>
+<p class="text-on-surface-variant font-medium">@sports_central • 4.2k views</p>
+</div>
+<button class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-dim flex items-center justify-center text-on-primary shadow-[0_0_40px_rgba(184,159,255,0.3)] active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Standard Card 1 -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden hover:bg-surface-container-high transition-colors">
+<div class="relative aspect-[4/5] overflow-hidden">
+<img alt="Coding Session" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="top down view of a minimalist desk with a glowing laptop screen showing code, dark room with purple neon accent lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfpZl-7uG9j6HvbEovIgedoXs2YZiyckD7LzsRCT9UKb7eCMu9T36X35J8TnJC8kwVHQw3RVQ-uWG6qD7EDZnb26UWas_s4zTQVt3CuLTHETnzDfm9_XFqIyP9KxioWOYdwW6JG7ug8V5KUwue2WCl3PuvIuX0ODH1CaHlc5punMQCeiNVQ3ZJ-KR9lzYTh6KLjZwZeskUfWV6cJcWhA9_pkUel3gpIqIdKiW7kjpcXZyV4aznNrlDUEe6GARbeAWw499yKEZqdJw5"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+<div class="absolute top-4 right-4 bg-surface-container-high/60 backdrop-blur-md w-10 h-10 rounded-full flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="absolute bottom-4 left-4 right-4">
+<button class="w-full py-3 bg-white/10 backdrop-blur-xl rounded-full border border-white/10 text-white font-bold flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">play_circle</span>
+                            Watch Now
+                        </button>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-headline font-bold text-on-surface mb-1">Late Night Dev Log</h3>
+<p class="text-on-surface-variant text-sm flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                        @code_with_kai
+                    </p>
+</div>
+</div>
+<!-- Standard Card 2 -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden hover:bg-surface-container-high transition-colors">
+<div class="relative aspect-[4/5] overflow-hidden">
+<img alt="Yoga session" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="person practicing yoga in a high-end minimalist studio with floor-to-ceiling windows, soft morning light, zen atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFocoKCyjs1pDFkiY7yGumehpDCadT0BEVxvqZGDlOGnujnRpUwFB7HAtq9YlOiRrOoahiDFQRg7Cwbk2ISUST6a8RsCbJpUJ_RbCujXYJi6vLpb00EwS04KCfD71QIOJbpG6VykqmcPNGpdnJfI7HwQlb1HxPySUEiFXlBIwzBWMZlbalX9RFcBMaPe3wGNXcPNr-CGJPp0vPySjvK1L02VlYNQipc__4GDuMzmp0RTJnaY00riDS7vBx7d81xnpaeq13Nxi8ztWi"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+<div class="absolute top-4 right-4 bg-surface-container-high/60 backdrop-blur-md w-10 h-10 rounded-full flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="absolute bottom-4 left-4 right-4">
+<button class="w-full py-3 bg-white/10 backdrop-blur-xl rounded-full border border-white/10 text-white font-bold flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">play_circle</span>
+                            Watch Now
+                        </button>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-headline font-bold text-on-surface mb-1">Morning Flow Routine</h3>
+<p class="text-on-surface-variant text-sm flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                        @wellness_vibes
+                    </p>
+</div>
+</div>
+<!-- Standard Card 3 (Horizontal on small, square on large) -->
+<div class="group bg-surface-container-low rounded-xl overflow-hidden hover:bg-surface-container-high transition-colors">
+<div class="relative aspect-[4/5] overflow-hidden">
+<img alt="Concert" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="vibrant music festival stage with bright purple and pink strobe lights, silhouettes of a cheering crowd, electric atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoJCwwEbbtdLPhTNJGJ6_aulHmmT0PE4br7lul6rUqvbG3Xm1DhNHr0Ulgur5T9ayZ8qITwVf1-L_iAehFNC6tEbBAsov_MLlcdYxV8QzaNumOwa0Oen1eVg5M-s9AvOgYror9fJRq1RxLA9jIm6Pe97YNkrE5XyjdriirIsXLPQIiAeFwjfcUmRj-HM7c4cP8SGO4293AUZ4PclH7zZQkFhbsuyNtYDBAZPemJmHQNtKiu808fIzmvuIOT-RIR0AHBbqENtDS_WLZ"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+<div class="absolute top-4 right-4 bg-surface-container-high/60 backdrop-blur-md w-10 h-10 rounded-full flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="absolute bottom-4 left-4 right-4">
+<button class="w-full py-3 bg-white/10 backdrop-blur-xl rounded-full border border-white/10 text-white font-bold flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">play_circle</span>
+                            Watch Now
+                        </button>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-headline font-bold text-on-surface mb-1">Weekend Rave Recap</h3>
+<p class="text-on-surface-variant text-sm flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                        @music_junkie
+                    </p>
+</div>
+</div>
+<!-- Smaller Bento Tile -->
+<div class="group relative overflow-hidden rounded-xl bg-surface-container-high aspect-square">
+<img alt="Podcast Mic" class="w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-500" data-alt="close up of a professional studio microphone with a red recording light in the background, bokeh lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzbYOnGDF5ajK3Kxds9YKC0vmSSdEvi4Iw3NIOVJtfgKYkhjbUx-rmJB6W5zvgT4-vplN-WeBtkl6_qZArn3KL5Puol9m6hUtxEE6Ok80oOlTIccrTKeJb7xaKOW1lDDQct31QC61vYVOekx_lo2VNkbRbV0Nq9AKQsoVvRmD59rqJxcX1JJKDyqutSugUkpqtqaPaO7mfmrCm1_zbAdu7AR7qwN1kpOzRA0qG4f7eoNnbIodhuxp24goXlYz_thlIlKXqteRlVChL"/>
+<div class="absolute inset-0 p-6 flex flex-col justify-between">
+<div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div>
+<h4 class="text-lg font-headline font-bold text-on-surface">Weekly Tech Talk</h4>
+<p class="text-on-surface-variant text-xs font-medium uppercase tracking-wider mt-1">@future_foundry</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty state placeholder for the bottom of the list -->
+<div class="mt-16 flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-outline-variant/20 rounded-xl">
+<span class="material-symbols-outlined text-6xl text-outline-variant/40 mb-4">explore</span>
+<p class="text-on-surface-variant font-medium">Swipe more to fill your favorites!</p>
+<button class="mt-4 px-8 py-3 bg-surface-container-high hover:bg-surface-bright transition-colors rounded-full text-primary font-bold">Discover New Content</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-[#1c0832]/60 backdrop-blur-xl flex justify-around items-center px-8 pb-6 pt-4 rounded-t-[3rem] shadow-[0_-10px_40px_rgba(184,159,255,0.15)]">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-[#f1dfff]/60 p-3 hover:text-[#b89fff] transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] uppercase tracking-widest font-bold mt-1">Home</span>
+</a>
+<!-- Swipe -->
+<a class="flex flex-col items-center justify-center text-[#f1dfff]/60 p-3 hover:text-[#b89fff] transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="swipe_vertical">swipe_vertical</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] uppercase tracking-widest font-bold mt-1">Swipe</span>
+</a>
+<!-- Favorites (ACTIVE) -->
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#b89fff] to-[#8254f4] text-[#16052a] rounded-full p-3 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-['Be_Vietnam_Pro'] text-[10px] uppercase tracking-widest font-bold mt-1">Favorites</span>
+</a>
+</nav>
+</body></html>

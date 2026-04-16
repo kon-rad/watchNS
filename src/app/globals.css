@@ -1,0 +1,108 @@
+@import "tailwindcss";
+@import "@fontsource/plus-jakarta-sans/400.css";
+@import "@fontsource/plus-jakarta-sans/500.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
+@import "@fontsource/plus-jakarta-sans/800.css";
+@import "@fontsource/be-vietnam-pro/400.css";
+@import "@fontsource/be-vietnam-pro/500.css";
+@import "@fontsource/be-vietnam-pro/700.css";
+
+@theme inline {
+  /* Surface hierarchy */
+  --color-surface: #16052a;
+  --color-surface-dim: #16052a;
+  --color-surface-bright: #391e58;
+  --color-surface-container-lowest: #000000;
+  --color-surface-container-low: #1c0832;
+  --color-surface-container: #240e3b;
+  --color-surface-container-high: #2b1345;
+  --color-surface-container-highest: #32194e;
+  --color-surface-variant: #32194e;
+  --color-surface-tint: #b89fff;
+
+  /* Primary */
+  --color-primary: #b89fff;
+  --color-primary-dim: #8254f4;
+  --color-primary-container: #ac8eff;
+  --color-on-primary: #37008e;
+  --color-on-primary-container: #2a0070;
+  --color-on-primary-fixed: #000000;
+
+  /* Secondary */
+  --color-secondary: #c492fe;
+  --color-secondary-dim: #b987f2;
+  --color-secondary-container: #5d2c92;
+  --color-on-secondary: #3e0174;
+  --color-on-secondary-container: #e2c5ff;
+
+  /* Tertiary (energy) */
+  --color-tertiary: #ff97b8;
+  --color-tertiary-dim: #ef77a0;
+  --color-tertiary-container: #fc81ab;
+  --color-on-tertiary: #6a0936;
+  --color-on-tertiary-container: #59002b;
+  --color-on-tertiary-fixed: #380019;
+
+  /* Error */
+  --color-error: #ff6e84;
+  --color-error-dim: #d73357;
+  --color-error-container: #a70138;
+  --color-on-error: #490013;
+  --color-on-error-container: #ffb2b9;
+
+  /* On-surface */
+  --color-on-surface: #f1dfff;
+  --color-on-surface-variant: #b9a2d0;
+  --color-on-background: #f1dfff;
+  --color-background: #16052a;
+
+  /* Outline */
+  --color-outline: #826d98;
+  --color-outline-variant: #524067;
+
+  /* Inverse */
+  --color-inverse-surface: #fff7ff;
+  --color-inverse-on-surface: #604d75;
+  --color-inverse-primary: #6c3add;
+
+  /* Border radius */
+  --radius-DEFAULT: 1rem;
+  --radius-lg: 2rem;
+  --radius-xl: 3rem;
+  --radius-full: 9999px;
+
+  /* Fonts */
+  --font-headline: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Be Vietnam Pro", sans-serif;
+  --font-label: "Be Vietnam Pro", sans-serif;
+}
+
+body {
+  background-color: #16052a;
+  color: #f1dfff;
+  font-family: "Be Vietnam Pro", sans-serif;
+  min-height: 100dvh;
+}
+
+::selection {
+  background-color: #b89fff;
+  color: #37008e;
+}
+
+.glass-panel {
+  background: rgba(22, 5, 42, 0.6);
+  backdrop-filter: blur(24px);
+}
+
+.editorial-shadow {
+  box-shadow: 0 20px 80px -20px rgba(184, 159, 255, 0.3);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
