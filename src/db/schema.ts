@@ -29,6 +29,7 @@ export const videos = sqliteTable("videos", {
   title: text("title"),
   thumbnailUrl: text("thumbnail_url"),
   likeCount: integer("like_count").notNull().default(0),
+  viewCount: integer("view_count").notNull().default(0),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
