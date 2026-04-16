@@ -49,11 +49,9 @@ export default function SwipeCard({
 
   const handlers = useSwipeable({
     onSwiping: (e) => {
-      if (playing) return;
       setDragX(e.deltaX);
     },
     onSwipedLeft: () => {
-      if (playing) return;
       if (Math.abs(dragX) > SWIPE_THRESHOLD) {
         animateOut("left");
       } else {
@@ -61,7 +59,6 @@ export default function SwipeCard({
       }
     },
     onSwipedRight: () => {
-      if (playing) return;
       if (dragX > SWIPE_THRESHOLD) {
         animateOut("right");
       } else {
@@ -85,7 +82,7 @@ export default function SwipeCard({
   return (
     <div
       {...handlers}
-      className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8)] border border-white/5 bg-surface-container-lowest"
+      className="relative w-full h-full rounded-xl overflow-hidden shadow-[0_20px_50px_-12px_rgba(0,0,0,0.8)] border border-white/5 bg-surface-container-lowest"
       style={{
         transform: exitTransform,
         transition: exiting || dragX === 0 ? "transform 0.3s ease-out" : "none",

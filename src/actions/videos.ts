@@ -177,6 +177,30 @@ export async function incrementViewCount(videoId: number): Promise<void> {
     .run();
 }
 
+export async function getRandomVideo(): Promise<VideoWithCreator | null> {
+  const video = db
+    .select({
+      id: videos.id,
+      url: videos.url,
+      embedUrl: videos.embedUrl,
+      platform: videos.platform,
+      title: videos.title,
+      thumbnailUrl: videos.thumbnailUrl,
+      likeCount: videos.likeCount,
+      viewCount: videos.viewCount,
+      creatorName: creators.name,
+      creatorAvatar: creators.avatarUrl,
+      creatorChannelUrl: creators.channelUrl,
+    })
+    .from(videos)
+    .innerJoin(creators, eq(videos.creatorId, creators.id))
+    .orderBy(sql`RANDOM()`)
+    .limit(1)
+    .get();
+
+  return video ?? null;
+}
+
 export type SortOption = "likes" | "views" | "a-z";
 
 export async function getAllVideos(

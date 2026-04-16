@@ -11,6 +11,7 @@ export default function TopNav() {
     <>
       <nav className="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl flex justify-between items-center px-6 py-4">
         <Link href="/" className="flex items-center gap-3">
+          <img src="/ns-logo.png" alt="Network School" className="h-8 w-8 rounded-full" />
           <span className="text-2xl font-black text-on-surface tracking-tighter font-headline">
             WatchNS
           </span>

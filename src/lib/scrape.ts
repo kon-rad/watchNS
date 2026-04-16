@@ -116,44 +116,113 @@ export async function scrapeChannelVideoUrls(
   channelUrl: string,
   limit: number = 10
 ): Promise<string[]> {
-  if (platform !== "youtube") return [];
+  const headers = {
+    "User-Agent":
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept-Language": "en-US,en;q=0.9",
+  };
 
   try {
-    // Normalize to /videos page
-    let videosUrl = channelUrl.replace(/\/+$/, "");
-    if (!videosUrl.endsWith("/videos")) {
-      videosUrl += "/videos";
-    }
+    if (platform === "youtube") {
+      let videosUrl = channelUrl.replace(/\/+$/, "");
+      if (!videosUrl.endsWith("/videos")) {
+        videosUrl += "/videos";
+      }
 
-    const res = await fetch(videosUrl, {
-      signal: AbortSignal.timeout(10000),
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept-Language": "en-US,en;q=0.9",
-      },
-    });
-    if (!res.ok) return [];
-    const html = await res.text();
+      const res = await fetch(videosUrl, {
+        signal: AbortSignal.timeout(10000),
+        headers,
+      });
+      if (!res.ok) return [];
+      const html = await res.text();
 
-    // Extract video IDs from the page HTML
-    const videoIds = new Set<string>();
-    const patterns = [
-      /\/watch\?v=([a-zA-Z0-9_-]{11})/g,
-      /"videoId":"([a-zA-Z0-9_-]{11})"/g,
-    ];
+      const videoIds = new Set<string>();
+      const patterns = [
+        /\/watch\?v=([a-zA-Z0-9_-]{11})/g,
+        /"videoId":"([a-zA-Z0-9_-]{11})"/g,
+      ];
 
-    for (const pattern of patterns) {
-      for (const match of html.matchAll(pattern)) {
-        videoIds.add(match[1]);
+      for (const pattern of patterns) {
+        for (const match of html.matchAll(pattern)) {
+          videoIds.add(match[1]);
+          if (videoIds.size >= limit) break;
+        }
         if (videoIds.size >= limit) break;
       }
-      if (videoIds.size >= limit) break;
+
+      return [...videoIds]
+        .slice(0, limit)
+        .map((id) => `https://www.youtube.com/watch?v=${id}`);
     }
 
-    return [...videoIds]
-      .slice(0, limit)
-      .map((id) => `https://www.youtube.com/watch?v=${id}`);
+    if (platform === "instagram") {
+      // Strip query params for a clean profile URL
+      const profileUrl = channelUrl.split("?")[0].replace(/\/+$/, "");
+
+      const res = await fetch(profileUrl + "/", {
+        signal: AbortSignal.timeout(10000),
+        headers,
+      });
+      if (!res.ok) return [];
+      const html = await res.text();
+
+      const reelIds = new Set<string>();
+      // Instagram embeds reel/post shortcodes in the HTML
+      const patterns = [
+        /\/reel\/([A-Za-z0-9_-]+)/g,
+        /\/p\/([A-Za-z0-9_-]+)/g,
+      ];
+
+      for (const pattern of patterns) {
+        for (const match of html.matchAll(pattern)) {
+          reelIds.add(match[1]);
+          if (reelIds.size >= limit) break;
+        }
+        if (reelIds.size >= limit) break;
+      }
+
+      return [...reelIds]
+        .slice(0, limit)
+        .map((id) => `https://www.instagram.com/reel/${id}/`);
+    }
+
+    if (platform === "tiktok") {
+      const profileUrl = channelUrl.split("?")[0].replace(/\/+$/, "");
+
+      const res = await fetch(profileUrl, {
+        signal: AbortSignal.timeout(10000),
+        headers,
+      });
+      if (!res.ok) return [];
+      const html = await res.text();
+
+      const videoIds = new Set<string>();
+      // TikTok includes video IDs in the page HTML/JSON
+      const patterns = [
+        /\/video\/(\d{15,25})/g,
+        /"id":"(\d{15,25})"/g,
+      ];
+
+      // Extract the username from the URL for building full video URLs
+      const username = profileUrl.match(/@([\w.]+)/)?.[1];
+
+      for (const pattern of patterns) {
+        for (const match of html.matchAll(pattern)) {
+          videoIds.add(match[1]);
+          if (videoIds.size >= limit) break;
+        }
+        if (videoIds.size >= limit) break;
+      }
+
+      return [...videoIds]
+        .slice(0, limit)
+        .map(
+          (id) =>
+            `https://www.tiktok.com/@${username || "user"}/video/${id}`
+        );
+    }
+
+    return [];
   } catch (e) {
     console.error("[scrapeChannelVideoUrls] error:", e);
     return [];
