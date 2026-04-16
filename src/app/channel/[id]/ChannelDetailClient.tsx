@@ -4,6 +4,23 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { getChannelWithVideos } from "@/actions/videos";
 import type { VideoWithCreator, CreatorWithStats, SortOption } from "@/actions/videos";
+import ExpandableDetails from "@/components/ExpandableDetails";
+
+function formatNumber(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+  return n.toString();
+}
+
+function DetailRow({ label, value }: { label: string; value: string | number | null | undefined }) {
+  if (value === null || value === undefined) return null;
+  return (
+    <div className="flex justify-between items-start gap-4">
+      <span className="text-on-surface-variant shrink-0">{label}</span>
+      <span className="text-on-surface text-right">{typeof value === "number" ? formatNumber(value) : value}</span>
+    </div>
+  );
+}
 
 export default function ChannelDetailClient({
   channel,
@@ -27,7 +44,7 @@ export default function ChannelDetailClient({
   const sortOptions: { value: SortOption; label: string }[] = [
     { value: "likes", label: "Likes" },
     { value: "views", label: "Views" },
-    { value: "a-z", label: "A–Z" },
+    { value: "a-z", label: "A\u2013Z" },
   ];
 
   return (
@@ -44,7 +61,7 @@ export default function ChannelDetailClient({
       </Link>
 
       {/* Channel header */}
-      <div className="flex items-center gap-6 mb-10">
+      <div className="flex items-center gap-6 mb-6">
         {channel.avatarUrl ? (
           <img
             src={channel.avatarUrl}
@@ -91,6 +108,48 @@ export default function ChannelDetailClient({
             </svg>
           </a>
         </div>
+      </div>
+
+      {/* Expandable Channel Details */}
+      <div className="mb-10">
+        <ExpandableDetails title="Channel Details">
+          <DetailRow label="Platform" value={channel.platform.charAt(0).toUpperCase() + channel.platform.slice(1)} />
+          {channel.followerCount != null && (
+            <DetailRow label="Followers" value={channel.followerCount} />
+          )}
+          {channel.followingCount != null && (
+            <DetailRow label="Following" value={channel.followingCount} />
+          )}
+          {channel.totalLikesReceived != null && (
+            <DetailRow label="Total Likes Received" value={channel.totalLikesReceived} />
+          )}
+          <DetailRow label="Videos on WatchNS" value={channel.videoCount} />
+          <DetailRow label="WatchNS Favorites" value={channel.totalLikes} />
+          <DetailRow label="WatchNS Views" value={channel.totalViews} />
+          {channel.externalUrl && (
+            <div className="flex justify-between items-start gap-4">
+              <span className="text-on-surface-variant shrink-0">Website</span>
+              <a
+                href={channel.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline text-right truncate"
+              >
+                {channel.externalUrl.replace(/^https?:\/\//, "")}
+              </a>
+            </div>
+          )}
+          {channel.bio && (
+            <div className="pt-2 border-t border-outline-variant/10">
+              <p className="text-on-surface-variant text-xs font-bold uppercase tracking-widest mb-1">
+                Bio
+              </p>
+              <p className="text-on-surface whitespace-pre-wrap leading-relaxed">
+                {channel.bio}
+              </p>
+            </div>
+          )}
+        </ExpandableDetails>
       </div>
 
       {/* Sort + Video list */}

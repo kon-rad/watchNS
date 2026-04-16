@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { toggleFavorite } from "@/actions/videos";
 import type { VideoWithCreator } from "@/actions/videos";
+import ExpandableDetails from "@/components/ExpandableDetails";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -15,6 +16,43 @@ function getPlatformLabel(platform: string) {
     case "instagram": return "Instagram";
     default: return platform;
   }
+}
+
+function formatDuration(iso: string): string {
+  const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  if (!match) return iso;
+  const h = match[1] ? `${match[1]}h ` : "";
+  const m = match[2] ? `${match[2]}m ` : "";
+  const s = match[3] ? `${match[3]}s` : "";
+  return (h + m + s).trim() || iso;
+}
+
+function formatDate(dateStr: string): string {
+  try {
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+function formatNumber(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
+  return n.toString();
+}
+
+function DetailRow({ label, value }: { label: string; value: string | number | null | undefined }) {
+  if (value === null || value === undefined) return null;
+  return (
+    <div className="flex justify-between items-start gap-4">
+      <span className="text-on-surface-variant shrink-0">{label}</span>
+      <span className="text-on-surface text-right">{typeof value === "number" ? formatNumber(value) : value}</span>
+    </div>
+  );
 }
 
 export default function VideoDetailClient({
@@ -133,6 +171,39 @@ export default function VideoDetailClient({
             </svg>
           </a>
         </div>
+
+        {/* Expandable Details */}
+        <ExpandableDetails title="Video Details">
+          <DetailRow label="Platform" value={getPlatformLabel(video.platform)} />
+          {video.publishedAt && (
+            <DetailRow label="Published" value={formatDate(video.publishedAt)} />
+          )}
+          {video.duration && (
+            <DetailRow label="Duration" value={formatDuration(video.duration)} />
+          )}
+          {video.genre && <DetailRow label="Genre" value={video.genre} />}
+          {video.sourceViewCount != null && (
+            <DetailRow label={`Views (${getPlatformLabel(video.platform)})`} value={video.sourceViewCount} />
+          )}
+          {video.sourceLikeCount != null && (
+            <DetailRow label={`Likes (${getPlatformLabel(video.platform)})`} value={video.sourceLikeCount} />
+          )}
+          {video.commentCount != null && (
+            <DetailRow label="Comments" value={video.commentCount} />
+          )}
+          <DetailRow label="WatchNS Views" value={video.viewCount} />
+          <DetailRow label="WatchNS Favorites" value={video.likeCount} />
+          {video.description && (
+            <div className="pt-2 border-t border-outline-variant/10">
+              <p className="text-on-surface-variant text-xs font-bold uppercase tracking-widest mb-1">
+                Description
+              </p>
+              <p className="text-on-surface whitespace-pre-wrap leading-relaxed">
+                {video.description}
+              </p>
+            </div>
+          )}
+        </ExpandableDetails>
       </div>
     </div>
   );

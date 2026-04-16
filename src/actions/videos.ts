@@ -11,9 +11,16 @@ export type VideoWithCreator = {
   embedUrl: string | null;
   platform: string;
   title: string | null;
+  description: string | null;
   thumbnailUrl: string | null;
   likeCount: number;
   viewCount: number;
+  commentCount: number | null;
+  sourceLikeCount: number | null;
+  sourceViewCount: number | null;
+  duration: string | null;
+  publishedAt: string | null;
+  genre: string | null;
   creatorName: string;
   creatorAvatar: string | null;
   creatorChannelUrl: string;
@@ -25,9 +32,35 @@ export type CreatorWithStats = {
   avatarUrl: string | null;
   platform: string;
   channelUrl: string;
+  bio: string | null;
+  followerCount: number | null;
+  followingCount: number | null;
+  totalLikesReceived: number | null;
+  externalUrl: string | null;
   videoCount: number;
   totalLikes: number;
   totalViews: number;
+};
+
+const videoWithCreatorSelect = {
+  id: videos.id,
+  url: videos.url,
+  embedUrl: videos.embedUrl,
+  platform: videos.platform,
+  title: videos.title,
+  description: videos.description,
+  thumbnailUrl: videos.thumbnailUrl,
+  likeCount: videos.likeCount,
+  viewCount: videos.viewCount,
+  commentCount: videos.commentCount,
+  sourceLikeCount: videos.sourceLikeCount,
+  sourceViewCount: videos.sourceViewCount,
+  duration: videos.duration,
+  publishedAt: videos.publishedAt,
+  genre: videos.genre,
+  creatorName: creators.name,
+  creatorAvatar: creators.avatarUrl,
+  creatorChannelUrl: creators.channelUrl,
 };
 
 export async function getVideosForSwipe(
@@ -46,19 +79,7 @@ export async function getVideosForSwipe(
   const allExcluded = [...new Set([...excludeIds, ...favoritedIds])];
 
   let query = db
-    .select({
-      id: videos.id,
-      url: videos.url,
-      embedUrl: videos.embedUrl,
-      platform: videos.platform,
-      title: videos.title,
-      thumbnailUrl: videos.thumbnailUrl,
-      likeCount: videos.likeCount,
-      viewCount: videos.viewCount,
-      creatorName: creators.name,
-      creatorAvatar: creators.avatarUrl,
-      creatorChannelUrl: creators.channelUrl,
-    })
+    .select(videoWithCreatorSelect)
     .from(videos)
     .innerJoin(creators, eq(videos.creatorId, creators.id));
 
@@ -112,19 +133,7 @@ export async function getFavoriteVideos(): Promise<VideoWithCreator[]> {
   const userId = await getUserId();
 
   return db
-    .select({
-      id: videos.id,
-      url: videos.url,
-      embedUrl: videos.embedUrl,
-      platform: videos.platform,
-      title: videos.title,
-      thumbnailUrl: videos.thumbnailUrl,
-      likeCount: videos.likeCount,
-      viewCount: videos.viewCount,
-      creatorName: creators.name,
-      creatorAvatar: creators.avatarUrl,
-      creatorChannelUrl: creators.channelUrl,
-    })
+    .select(videoWithCreatorSelect)
     .from(favorites)
     .innerJoin(videos, eq(favorites.videoId, videos.id))
     .innerJoin(creators, eq(videos.creatorId, creators.id))
@@ -139,19 +148,7 @@ export async function getVideoById(
   const userId = await getUserId();
 
   const video = db
-    .select({
-      id: videos.id,
-      url: videos.url,
-      embedUrl: videos.embedUrl,
-      platform: videos.platform,
-      title: videos.title,
-      thumbnailUrl: videos.thumbnailUrl,
-      likeCount: videos.likeCount,
-      viewCount: videos.viewCount,
-      creatorName: creators.name,
-      creatorAvatar: creators.avatarUrl,
-      creatorChannelUrl: creators.channelUrl,
-    })
+    .select(videoWithCreatorSelect)
     .from(videos)
     .innerJoin(creators, eq(videos.creatorId, creators.id))
     .where(eq(videos.id, videoId))
@@ -179,19 +176,7 @@ export async function incrementViewCount(videoId: number): Promise<void> {
 
 export async function getRandomVideo(): Promise<VideoWithCreator | null> {
   const video = db
-    .select({
-      id: videos.id,
-      url: videos.url,
-      embedUrl: videos.embedUrl,
-      platform: videos.platform,
-      title: videos.title,
-      thumbnailUrl: videos.thumbnailUrl,
-      likeCount: videos.likeCount,
-      viewCount: videos.viewCount,
-      creatorName: creators.name,
-      creatorAvatar: creators.avatarUrl,
-      creatorChannelUrl: creators.channelUrl,
-    })
+    .select(videoWithCreatorSelect)
     .from(videos)
     .innerJoin(creators, eq(videos.creatorId, creators.id))
     .orderBy(sql`RANDOM()`)
@@ -214,19 +199,7 @@ export async function getAllVideos(
         : asc(videos.title);
 
   return db
-    .select({
-      id: videos.id,
-      url: videos.url,
-      embedUrl: videos.embedUrl,
-      platform: videos.platform,
-      title: videos.title,
-      thumbnailUrl: videos.thumbnailUrl,
-      likeCount: videos.likeCount,
-      viewCount: videos.viewCount,
-      creatorName: creators.name,
-      creatorAvatar: creators.avatarUrl,
-      creatorChannelUrl: creators.channelUrl,
-    })
+    .select(videoWithCreatorSelect)
     .from(videos)
     .innerJoin(creators, eq(videos.creatorId, creators.id))
     .orderBy(orderBy)
@@ -241,6 +214,11 @@ export async function getAllChannels(): Promise<CreatorWithStats[]> {
       avatarUrl: creators.avatarUrl,
       platform: creators.platform,
       channelUrl: creators.channelUrl,
+      bio: creators.bio,
+      followerCount: creators.followerCount,
+      followingCount: creators.followingCount,
+      totalLikesReceived: creators.totalLikesReceived,
+      externalUrl: creators.externalUrl,
       videoCount: sql<number>`count(${videos.id})`,
       totalLikes: sql<number>`coalesce(sum(${videos.likeCount}), 0)`,
       totalViews: sql<number>`coalesce(sum(${videos.viewCount}), 0)`,
@@ -266,6 +244,11 @@ export async function getChannelWithVideos(
       avatarUrl: creators.avatarUrl,
       platform: creators.platform,
       channelUrl: creators.channelUrl,
+      bio: creators.bio,
+      followerCount: creators.followerCount,
+      followingCount: creators.followingCount,
+      totalLikesReceived: creators.totalLikesReceived,
+      externalUrl: creators.externalUrl,
       videoCount: sql<number>`count(${videos.id})`,
       totalLikes: sql<number>`coalesce(sum(${videos.likeCount}), 0)`,
       totalViews: sql<number>`coalesce(sum(${videos.viewCount}), 0)`,
@@ -286,19 +269,7 @@ export async function getChannelWithVideos(
         : asc(videos.title);
 
   const channelVideos = db
-    .select({
-      id: videos.id,
-      url: videos.url,
-      embedUrl: videos.embedUrl,
-      platform: videos.platform,
-      title: videos.title,
-      thumbnailUrl: videos.thumbnailUrl,
-      likeCount: videos.likeCount,
-      viewCount: videos.viewCount,
-      creatorName: creators.name,
-      creatorAvatar: creators.avatarUrl,
-      creatorChannelUrl: creators.channelUrl,
-    })
+    .select(videoWithCreatorSelect)
     .from(videos)
     .innerJoin(creators, eq(videos.creatorId, creators.id))
     .where(eq(videos.creatorId, channelId))
