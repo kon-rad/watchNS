@@ -70,7 +70,7 @@ export async function submitUrl(
         .get()!;
     }
 
-    const videoUrls = await scrapeChannelVideoUrls(platform, url, 10);
+    const videoUrls = await scrapeChannelVideoUrls(platform, url, 50);
 
     for (const videoUrl of videoUrls) {
       try {
