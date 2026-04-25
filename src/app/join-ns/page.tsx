@@ -1,31 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import JoinNSGallery from "@/components/JoinNSGallery";
 
 const INVITE_URL = "https://ns.com/invite/konradgnat";
 const QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=20&bgcolor=ffffff&color=37008e&data=${encodeURIComponent(INVITE_URL)}`;
+const TOTAL_GALLERY_PHOTOS = 88;
 
 export const metadata: Metadata = {
-  title: "Join Network School — 1 Week Free | WatchNS",
+  title: "Join Network School — A Startup Society | WatchNS",
   description:
-    "5-star living, longevity-curated meals, 3 daily group workouts, 24/7 gyms, sauna, ice plunge, and a buzzing tech community 45 minutes from Singapore. Get your first week free with my invite.",
+    "The Network School is a frontier community for techno-optimists. Live with builders, learn from the best, train daily, and ship faster. Apply with my invite for a free week.",
 };
-
-const heroImages = [
-  { src: "/join-ns/hero-1.jpg", alt: "Network School campus" },
-  { src: "/join-ns/hero-2.jpg", alt: "NS community life" },
-  { src: "/join-ns/hero-3.jpg", alt: "NS beach view" },
-];
-
-const galleryImages = [
-  { src: "/join-ns/gym.jpg", alt: "24/7 fitness facility" },
-  { src: "/join-ns/sauna.jpg", alt: "Sauna and ice plunge" },
-  { src: "/join-ns/cafe.jpg", alt: "Coworking cafe" },
-  { src: "/join-ns/pool.jpg", alt: "Pool and pool bar" },
-  { src: "/join-ns/beach.jpg", alt: "Private beach" },
-  { src: "/join-ns/breakfast.jpg", alt: "5-star breakfast buffet" },
-  { src: "/join-ns/workout.jpg", alt: "Group workout" },
-  { src: "/join-ns/event.jpg", alt: "Community event" },
-];
 
 export default function JoinNSPage() {
   return (
@@ -44,22 +29,23 @@ export default function JoinNSPage() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-tertiary/15 text-tertiary border border-tertiary/30 backdrop-blur-sm">
               <span className="w-2 h-2 rounded-full bg-tertiary animate-pulse" />
               <span className="text-xs font-bold tracking-[0.25em] uppercase">
-                1 Week Free Invite
+                The Network School · A Startup Society
               </span>
             </div>
 
             <h1 className="text-[clamp(3rem,8vw,6rem)] leading-[0.88] font-black font-headline tracking-tighter">
-              <span className="text-on-surface">Live the</span>
+              <span className="text-on-surface">Live, learn,</span>
               <br />
-              <span className="shimmer-text">Network</span>
+              <span className="shimmer-text">burn, earn,</span>
               <br />
-              <span className="text-on-surface">School life.</span>
+              <span className="text-on-surface">have fun.</span>
             </h1>
 
             <p className="text-xl text-on-surface-variant max-w-xl leading-relaxed">
-              5-star living, longevity-curated meals, three daily group workouts,
-              24/7 gyms, and a buzzing community of founders, creators, and
-              crypto pioneers — 45 minutes from Singapore.
+              The Network School is a frontier community for techno-optimists.
+              Build yourself up while building a startup society alongside
+              remote workers, founders, creators, and engineers from around
+              the world.
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
@@ -69,19 +55,8 @@ export default function JoinNSPage() {
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-3 bg-gradient-to-br from-primary to-primary-dim text-on-primary-fixed px-10 py-5 rounded-full text-lg font-bold animate-pulse-glow"
               >
-                Claim Free Week
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="group-hover:translate-x-1 transition-transform"
-                >
+                Apply with my invite
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
@@ -90,16 +65,16 @@ export default function JoinNSPage() {
                 href="#why-ns"
                 className="inline-flex items-center gap-2 px-8 py-5 rounded-full border border-outline-variant/40 text-on-surface font-bold hover:bg-surface-container-high transition-colors"
               >
-                See What&apos;s Inside
+                Why come to NS
               </a>
             </div>
 
             <div className="flex items-center gap-6 pt-4 text-sm text-on-surface-variant">
-              <Stat label="Per month" value="$1.5k+" />
+              <Stat label="From" value="$1,500/mo" />
               <div className="w-px h-10 bg-outline-variant/30" />
-              <Stat label="Meals daily" value="3" />
+              <Stat label="All-inclusive" value="Society" />
               <div className="w-px h-10 bg-outline-variant/30" />
-              <Stat label="Workouts/day" value="3" />
+              <Stat label="Near" value="Singapore" />
             </div>
           </div>
 
@@ -110,12 +85,13 @@ export default function JoinNSPage() {
               <div className="absolute inset-0 bg-surface rounded-3xl -rotate-1" />
               <div className="relative bg-gradient-to-br from-surface-container-high to-surface-container rounded-3xl p-8 h-full flex flex-col items-center justify-center gap-4 editorial-shadow border border-outline-variant/20">
                 <p className="text-xs font-bold tracking-[0.25em] uppercase text-tertiary">
-                  Scan to Join
+                  Scan to apply
                 </p>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <div className="bg-white p-4 rounded-2xl shadow-2xl animate-float">
                   <img
                     src={QR_URL}
-                    alt="QR code to join Network School"
+                    alt="QR code to apply to Network School"
                     width="240"
                     height="240"
                     className="w-60 h-60"
@@ -125,7 +101,7 @@ export default function JoinNSPage() {
                   ns.com/invite/<span className="text-primary">konradgnat</span>
                 </p>
                 <p className="text-xs text-on-surface-variant">
-                  Includes 7 days free
+                  1 week free with this invite
                 </p>
               </div>
             </div>
@@ -133,114 +109,143 @@ export default function JoinNSPage() {
         </div>
       </section>
 
-      {/* HERO PHOTO STRIP */}
-      <section className="px-6 max-w-7xl mx-auto -mt-4 mb-24">
-        <div className="grid grid-cols-3 gap-3 sm:gap-5">
-          {heroImages.map((img, i) => (
-            <PhotoTile
-              key={img.src}
-              src={img.src}
-              alt={img.alt}
-              className={`aspect-[3/4] ${i === 1 ? "translate-y-6" : ""}`}
-              delay={i * 0.1}
-            />
-          ))}
+      {/* INTRO */}
+      <section className="px-6 max-w-5xl mx-auto py-16">
+        <div className="text-center space-y-6">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-tertiary">
+            What is the Network School?
+          </p>
+          <h2 className="text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] font-black font-headline tracking-tighter">
+            A frontier community for{" "}
+            <span className="shimmer-text">techno-optimists.</span>
+          </h2>
+          <p className="text-lg sm:text-xl text-on-surface-variant leading-relaxed max-w-3xl mx-auto">
+            Our members include remote workers, digital nomads, online creators,
+            personal trainers, self-improvers, event organizers, and engineers
+            of all stripes. You should apply if you want to build yourself up
+            while also building a startup society that bootstraps other startup
+            societies.
+          </p>
+          <p className="text-lg text-on-surface-variant leading-relaxed max-w-3xl mx-auto">
+            Membership starts at <span className="text-on-surface font-bold">$1,500/month with roommates</span>
+            {" "}and includes everything from meals to gym to accommodations. We
+            think of it as society-as-a-service.
+          </p>
         </div>
       </section>
 
-      {/* WHY NS — feature pillars */}
+      {/* WHY NS — Learn / Burn / Earn / Fun */}
       <section id="why-ns" className="px-6 max-w-7xl mx-auto py-20">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <p className="text-xs font-bold tracking-[0.3em] uppercase text-tertiary mb-4">
-            Why Network School
+            Why come to Network School
           </p>
           <h2 className="text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] font-black font-headline tracking-tighter">
-            The most <span className="shimmer-text">unbeatable</span> deal in
-            modern living.
+            Live with builders. <span className="shimmer-text">Learn, burn, earn,</span> and have fun.
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <PillarCard
+            tone="primary"
+            kicker="Learn"
+            title="Talks from founders and investors"
+            description="Past speakers include Vitalik Buterin (Ethereum), Bryan Johnson (Don't Die), Ryan Petersen (Flexport), Shailesh Lakhani (Sequoia India / Peak), and Olaf Carlson-Wee (Polychain)."
+          />
+          <PillarCard
+            tone="tertiary"
+            kicker="Burn"
+            title="Daily workouts and healthy meals"
+            description="Our trainers maximize your fitness, while our chefs optimize your food. All you have to do is stay with us to stay in shape."
+          />
+          <PillarCard
+            tone="secondary"
+            kicker="Earn"
+            title="Work remotely, but in a community"
+            description="Meet collaborators when you're heads up, and save money when you're heads down."
+          />
+          <PillarCard
+            tone="primary"
+            kicker="Fun"
+            title="A flexible social calendar"
+            description="New events pop up every few days. Hang out with fellow techno-optimists from around the world, and visit Singapore next door."
+          />
+        </div>
+      </section>
+
+      {/* MEMBERSHIP INCLUDES */}
+      <section className="px-6 max-w-7xl mx-auto py-20">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-tertiary mb-4">
+            Starting at $1,500/month
+          </p>
+          <h2 className="text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] font-black font-headline tracking-tighter">
+            Your membership includes <span className="shimmer-text">everything.</span>
           </h2>
           <p className="mt-6 text-lg text-on-surface-variant">
-            Compare any 5-star resort, gym, longevity program, and coworking
-            membership combined. Nothing comes close.
+            From room to food to gym. Society-as-a-service.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <FeatureCard
-            tone="primary"
-            kicker="Pricing"
-            title="$1.5k–3k/month — all in"
-            description="Shared room from $1,500/mo. Private room $3,000/mo. Includes housing, three meals daily, all amenities, gyms, pools, sauna, ice plunge, and 24/7 coworking."
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="1" x2="12" y2="23" />
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-              </svg>
-            }
-          />
-          <FeatureCard
-            tone="tertiary"
-            kicker="Food"
-            title="3 meals, longevity-curated"
-            description="Five-star hotel breakfast buffet. Healthy lunch and dinner curated by Bryan Johnson for longevity and peak health. Eat well, every single day."
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 2v7c0 1.1.9 2 2 2h2v11h2V11h2c1.1 0 2-.9 2-2V2H3z" />
-                <path d="M19 2v20" />
-                <path d="M19 2c-1.7 0-3 1.3-3 3v7h6V5c0-1.7-1.3-3-3-3z" />
-              </svg>
-            }
-          />
-          <FeatureCard
-            tone="secondary"
-            kicker="Fitness"
-            title="3 group workouts daily"
-            description="Sessions at 7am, 11am, and 5pm. Two fully-equipped gyms with 24/7 access right in the hotel. Sauna, ice plunge, pool — included."
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6.5 6.5h11M6.5 17.5h11M3 9.5v5M21 9.5v5M5.5 6.5v11M18.5 6.5v11" />
-              </svg>
-            }
-          />
-          <FeatureCard
-            tone="primary"
-            kicker="Workspace"
-            title="24/7 coworking + cafe"
-            description="Large coworking cafe with great food, dedicated phone booths for calls, and a beautiful private beach steps away. Just 45 minutes from Singapore."
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="18" height="14" rx="2" />
-                <line x1="8" y1="21" x2="16" y2="21" />
-                <line x1="12" y1="17" x2="12" y2="21" />
-              </svg>
-            }
-          />
-          <FeatureCard
-            tone="tertiary"
-            kicker="Community"
-            title="Daily events & meetups"
-            description="Daily core team programming plus community-organized events: workshops, founder meetups, breathwork, beach runs. There's always something happening."
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-            }
-          />
-          <FeatureCard
-            tone="secondary"
-            kicker="Conferences"
-            title="Hackathons & summits"
-            description="Regular conferences, hackathons, and workshops hosted by leading tech startups, top creators, and crypto teams. Build, ship, and meet the people doing the same."
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path d="M2 17l10 5 10-5" />
-                <path d="M2 12l10 5 10-5" />
-              </svg>
-            }
-          />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {[
+            { label: "Nutritious Meals", icon: "meals" },
+            { label: "24/7 Gym Access", icon: "gym" },
+            { label: "World-Class Lectures", icon: "lecture" },
+            { label: "Community Events", icon: "events" },
+            { label: "24/7 Coworking", icon: "work" },
+            { label: "Content Studio", icon: "studio" },
+            { label: "Workshops", icon: "workshop" },
+            { label: "Fitness Classes", icon: "fitness" },
+            { label: "Makerspace", icon: "maker" },
+            { label: "High-Speed Wi-Fi", icon: "wifi" },
+          ].map((item) => (
+            <IncludedTile key={item.label} label={item.label} iconKey={item.icon} />
+          ))}
+        </div>
+
+        <div className="mt-12 grid sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+          <RoomTier name="With Roommate" price="$1,500" />
+          <RoomTier name="Private Room" price="$3,000" />
+          <RoomTier name="Serviced Room" price="Inquire" />
+        </div>
+      </section>
+
+      {/* GALLERY */}
+      <section className="px-6 max-w-7xl mx-auto py-20">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-tertiary mb-3">
+            Gallery
+          </p>
+          <h2 className="text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] font-black font-headline tracking-tighter">
+            See what NS is <span className="shimmer-text">all about.</span>
+          </h2>
+          <p className="mt-4 text-on-surface-variant">
+            {TOTAL_GALLERY_PHOTOS} moments from inside the campus. Click any image to expand.
+          </p>
+        </div>
+        <JoinNSGallery count={TOTAL_GALLERY_PHOTOS} />
+      </section>
+
+      {/* SPEAKERS */}
+      <section className="px-6 max-w-7xl mx-auto py-20">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-tertiary mb-3">
+            NS Speakers
+          </p>
+          <h2 className="text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] font-black font-headline tracking-tighter">
+            Founders, investors,{" "}
+            <span className="shimmer-text">operators.</span>
+          </h2>
+          <p className="mt-4 text-on-surface-variant">
+            Past speakers at Network School, the Network State Podcast, and the
+            annual Network State Conference.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          {SPEAKERS.map((s) => (
+            <SpeakerChip key={s.name} name={s.name} role={s.role} />
+          ))}
         </div>
       </section>
 
@@ -260,9 +265,9 @@ export default function JoinNSPage() {
             </h3>
             <div className="grid sm:grid-cols-3 gap-6">
               <ScheduleItem time="7:00 AM" title="Group Workout" desc="High-energy training to start the day strong." />
-              <ScheduleItem time="8:30 AM" title="5-star Breakfast" desc="Hotel buffet — fuel up and meet the community." />
+              <ScheduleItem time="8:30 AM" title="Breakfast" desc="Hotel buffet — fuel up and meet the community." />
               <ScheduleItem time="11:00 AM" title="Group Workout" desc="Mid-morning movement option for the second wave." />
-              <ScheduleItem time="1:00 PM" title="Longevity Lunch" desc="Curated by Bryan Johnson — eat for performance." />
+              <ScheduleItem time="1:00 PM" title="Lunch" desc="Healthy meals optimized for performance." />
               <ScheduleItem time="5:00 PM" title="Group Workout" desc="Sauna and ice plunge after to lock in recovery." />
               <ScheduleItem time="7:00 PM" title="Dinner & Events" desc="Workshops, talks, hackathons, beach hangs." />
             </div>
@@ -270,25 +275,19 @@ export default function JoinNSPage() {
         </div>
       </section>
 
-      {/* GALLERY */}
-      <section className="px-6 max-w-7xl mx-auto py-20">
-        <div className="text-center max-w-3xl mx-auto mb-12">
+      {/* FAQ */}
+      <section className="px-6 max-w-4xl mx-auto py-20">
+        <div className="text-center mb-12">
           <p className="text-xs font-bold tracking-[0.3em] uppercase text-tertiary mb-3">
-            Inside the campus
+            FAQs
           </p>
-          <h2 className="text-[clamp(2rem,5vw,3.5rem)] leading-[0.95] font-black font-headline tracking-tighter">
-            Built for high performers.
+          <h2 className="text-[clamp(2rem,5vw,3.5rem)] leading-[1.05] font-black font-headline tracking-tighter">
+            Common questions.
           </h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
-          {galleryImages.map((img, i) => (
-            <PhotoTile
-              key={img.src}
-              src={img.src}
-              alt={img.alt}
-              className={i % 3 === 0 ? "row-span-2 aspect-[3/4]" : "aspect-square"}
-              delay={i * 0.05}
-            />
+        <div className="space-y-3">
+          {FAQS.map((f) => (
+            <FAQItem key={f.q} q={f.q} a={f.a} />
           ))}
         </div>
       </section>
@@ -300,15 +299,15 @@ export default function JoinNSPage() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(184,159,255,0.15),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(255,151,184,0.15),transparent_50%)]" />
             <div className="relative space-y-6">
               <p className="text-xs font-bold tracking-[0.3em] uppercase text-tertiary">
-                Use my invite
+                You might be our next member
               </p>
               <h2 className="text-[clamp(2.5rem,7vw,5rem)] leading-[0.95] font-black font-headline tracking-tighter">
-                Try NS for{" "}
-                <span className="shimmer-text">a week, free.</span>
+                Apply to{" "}
+                <span className="shimmer-text">Network School.</span>
               </h2>
               <p className="text-lg text-on-surface-variant max-w-2xl mx-auto">
-                Living. Meals. Gyms. Workouts. Community. All in. Decide if it&apos;s
-                for you — no commitment.
+                Live with builders from around the world. Learn, burn, earn, and
+                have fun. If you want to join us, please do apply.
               </p>
               <div className="pt-4">
                 <a
@@ -317,19 +316,8 @@ export default function JoinNSPage() {
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-3 bg-gradient-to-br from-primary to-primary-dim text-on-primary-fixed px-12 py-6 rounded-full text-xl font-black animate-pulse-glow"
                 >
-                  Get My Free Week
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="group-hover:translate-x-1 transition-transform"
-                  >
+                  Apply Now — 1 Week Free
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-1 transition-transform">
                     <line x1="5" y1="12" x2="19" y2="12" />
                     <polyline points="12 5 19 12 12 19" />
                   </svg>
@@ -338,6 +326,12 @@ export default function JoinNSPage() {
               <p className="text-sm text-on-surface-variant pt-2">
                 ns.com/invite/<span className="text-primary font-bold">konradgnat</span>
               </p>
+              <Link
+                href="/"
+                className="inline-block text-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline"
+              >
+                ← Back to WatchNS
+              </Link>
             </div>
           </div>
         </div>
@@ -345,6 +339,64 @@ export default function JoinNSPage() {
     </div>
   );
 }
+
+const SPEAKERS: { name: string; role: string }[] = [
+  { name: "Vitalik Buterin", role: "Cofounder, Ethereum" },
+  { name: "Brian Armstrong", role: "Cofounder, Coinbase" },
+  { name: "Richard Teng", role: "CEO, Binance" },
+  { name: "Ben Horowitz", role: "Cofounder, a16z" },
+  { name: "Bryan Johnson", role: "Founder, Don't Die" },
+  { name: "Naval Ravikant", role: "Cofounder, AngelList" },
+  { name: "Amjad Masad", role: "Cofounder, Replit" },
+  { name: "Anatoly Yakovenko", role: "Cofounder, Solana" },
+  { name: "Glenn Greenwald", role: "Founder, The Intercept" },
+  { name: "Andrew Huberman", role: "Huberman Podcast" },
+  { name: "Nuseir Yassin", role: "Cofounder, Nas Daily" },
+  { name: "Ranveer Allahbadia", role: "The Ranveer Show" },
+  { name: "Michael Saylor", role: "CEO, MicroStrategy" },
+  { name: "Tobi Lutke", role: "CEO, Shopify" },
+  { name: "Winklevoss Twins", role: "Cofounders, Gemini" },
+  { name: "Joe Lonsdale", role: "Founder, Palantir" },
+  { name: "Garry Tan", role: "CEO, YCombinator" },
+  { name: "Avlok Kohli", role: "CEO, AngelList" },
+  { name: "Jesse Powell", role: "Cofounder, Kraken" },
+  { name: "Jason Calacanis", role: "Early Investor, Uber" },
+  { name: "Arthur Hayes", role: "Cofounder, BitMEX" },
+  { name: "Pieter Levels", role: "Cofounder, Nomad List" },
+  { name: "Olaf Carlson-Wee", role: "Founder, Polychain" },
+  { name: "Zooko Wilcox", role: "Cofounder, Zcash" },
+];
+
+const FAQS: { q: string; a: string }[] = [
+  {
+    q: "How do I apply?",
+    a: "Apply through my invite at ns.com/invite/konradgnat — using the link unlocks a free first week. You'll receive a confirmation email acknowledging your application.",
+  },
+  {
+    q: "How much does it cost?",
+    a: "Membership starts at $1,500/month with a roommate. Private rooms are $3,000/month. Serviced rooms available — inquire for pricing. All tiers include meals, gym, and amenities.",
+  },
+  {
+    q: "What's included in the membership fee?",
+    a: "Accommodation, three meals per day, 24/7 gym and coworking access, fitness classes, lectures, workshops, content studio, makerspace, and high-speed Wi-Fi. Society-as-a-service.",
+  },
+  {
+    q: "How long do people stay?",
+    a: "Stays range from one cohort (a few weeks) to many months. Many members extend after their first cohort.",
+  },
+  {
+    q: "Where is Network School?",
+    a: "Forest City, Malaysia — about a 45-minute drive from Singapore. The campus is housed in a 5-star hotel right by the beach.",
+  },
+  {
+    q: "Can I bring coworkers and friends?",
+    a: "Yes — startup teams come to NS to live together and build faster. Each team member needs their own application.",
+  },
+  {
+    q: "Is internet included?",
+    a: "Yes. High-speed Wi-Fi throughout the campus, dedicated phone booths in the cafe for calls, and 24/7 coworking space.",
+  },
+];
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
@@ -355,48 +407,29 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function FeatureCard({
+function PillarCard({
   kicker,
   title,
   description,
-  icon,
   tone,
 }: {
   kicker: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
   tone: "primary" | "secondary" | "tertiary";
 }) {
   const toneMap = {
-    primary: {
-      pill: "bg-primary/20 text-primary",
-      iconBg: "bg-primary/15 text-primary",
-      hoverBorder: "hover:border-primary/50",
-    },
-    secondary: {
-      pill: "bg-secondary/20 text-secondary",
-      iconBg: "bg-secondary/15 text-secondary",
-      hoverBorder: "hover:border-secondary/50",
-    },
-    tertiary: {
-      pill: "bg-tertiary/20 text-tertiary",
-      iconBg: "bg-tertiary/15 text-tertiary",
-      hoverBorder: "hover:border-tertiary/50",
-    },
+    primary: { pill: "bg-primary/20 text-primary", border: "hover:border-primary/50" },
+    secondary: { pill: "bg-secondary/20 text-secondary", border: "hover:border-secondary/50" },
+    tertiary: { pill: "bg-tertiary/20 text-tertiary", border: "hover:border-tertiary/50" },
   }[tone];
 
   return (
-    <div
-      className={`group relative bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:bg-surface-container-high ${toneMap.hoverBorder}`}
-    >
-      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${toneMap.iconBg} group-hover:scale-110 transition-transform`}>
-        {icon}
-      </div>
-      <span className={`px-3 py-1 text-[10px] font-bold tracking-widest uppercase rounded-full ${toneMap.pill}`}>
+    <div className={`group relative bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/20 rounded-2xl p-8 transition-all hover:-translate-y-1 hover:bg-surface-container-high ${toneMap.border}`}>
+      <span className={`px-3 py-1 text-[10px] font-black tracking-[0.25em] uppercase rounded-full ${toneMap.pill}`}>
         {kicker}
       </span>
-      <h3 className="text-2xl font-black mt-4 leading-tight font-headline text-on-surface">
+      <h3 className="text-2xl sm:text-3xl font-black mt-4 leading-tight font-headline text-on-surface">
         {title}
       </h3>
       <p className="text-on-surface-variant mt-3 leading-relaxed">
@@ -416,35 +449,166 @@ function ScheduleItem({ time, title, desc }: { time: string; title: string; desc
   );
 }
 
-function PhotoTile({
-  src,
-  alt,
-  className,
-  delay,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-  delay: number;
-}) {
+function IncludedTile({ label, iconKey }: { label: string; iconKey: string }) {
   return (
-    <div
-      className={`relative group rounded-2xl overflow-hidden border border-outline-variant/20 animate-fade-up bg-gradient-to-br from-primary/30 via-secondary/20 to-tertiary/30 ${className ?? ""}`}
-      style={{ animationDelay: `${delay}s` }}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={alt}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-        loading="lazy"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-surface/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-        <p className="text-xs font-bold tracking-widest uppercase text-on-surface drop-shadow-lg">
-          {alt}
-        </p>
+    <div className="bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/20 rounded-2xl p-5 flex flex-col items-center text-center gap-3 hover:border-primary/40 hover:-translate-y-0.5 transition-all">
+      <div className="w-12 h-12 rounded-xl bg-primary/15 text-primary flex items-center justify-center">
+        <IncludedIcon iconKey={iconKey} />
+      </div>
+      <p className="text-sm font-bold text-on-surface leading-tight">{label}</p>
+    </div>
+  );
+}
+
+function IncludedIcon({ iconKey }: { iconKey: string }) {
+  const common = {
+    width: 22,
+    height: 22,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  };
+  switch (iconKey) {
+    case "meals":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" {...common}>
+          <path d="M3 2v7c0 1.1.9 2 2 2h2v11h2V11h2c1.1 0 2-.9 2-2V2" />
+          <path d="M19 2v20" />
+          <path d="M19 2c-1.7 0-3 1.3-3 3v7h6V5c0-1.7-1.3-3-3-3z" />
+        </svg>
+      );
+    case "gym":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" {...common}>
+          <path d="M6.5 6.5h11M6.5 17.5h11M3 9.5v5M21 9.5v5M5.5 6.5v11M18.5 6.5v11" />
+        </svg>
+      );
+    case "lecture":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" {...common}>
+          <path d="M2 10v3" />
+          <path d="M22 10v3" />
+          <path d="M6 6h12v12H6z" />
+          <path d="M9 22V18M15 22V18" />
+        </svg>
+      );
+    case "events":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" {...common}>
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+      );
+    case "work":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" {...common}>
+          <rect x="3" y="3" width="18" height="14" rx="2" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+      );
+    case "studio":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" {...common}>
+          <rect x="2" y="6" width="14" height="12" rx="2" />
+          <polygon points="22 8 16 12 22 16 22 8" />
+        </svg>
+      );
+    case "workshop":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" {...common}>
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+        </svg>
+      );
+    case "fitness":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" {...common}>
+          <circle cx="12" cy="5" r="2" />
+          <path d="M12 7v4l3 4M9 11l-2 4M15 11l2 8" />
+        </svg>
+      );
+    case "maker":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" {...common}>
+          <path d="M12 2L2 7l10 5 10-5-10-5z" />
+          <path d="M2 17l10 5 10-5" />
+          <path d="M2 12l10 5 10-5" />
+        </svg>
+      );
+    case "wifi":
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" {...common}>
+          <path d="M5 12.55a11 11 0 0 1 14 0" />
+          <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+          <line x1="12" y1="20" x2="12.01" y2="20" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
+function RoomTier({ name, price }: { name: string; price: string }) {
+  return (
+    <div className="bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/20 rounded-2xl p-6 text-center hover:border-primary/40 transition-colors">
+      <p className="text-xs font-bold tracking-widest uppercase text-on-surface-variant">
+        {name}
+      </p>
+      <p className="text-3xl font-black font-headline text-on-surface mt-2">
+        {price}
+      </p>
+      <p className="text-xs text-on-surface-variant mt-1">per month, all-inclusive</p>
+    </div>
+  );
+}
+
+function SpeakerChip({ name, role }: { name: string; role: string }) {
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join("");
+  return (
+    <div className="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/20 rounded-2xl p-4 flex items-center gap-3 hover:border-primary/40 hover:-translate-y-0.5 transition-all">
+      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary via-secondary to-tertiary flex items-center justify-center text-on-primary-fixed font-black text-sm shrink-0">
+        {initials}
+      </div>
+      <div className="min-w-0">
+        <p className="font-bold text-on-surface text-sm leading-tight truncate">{name}</p>
+        <p className="text-xs text-on-surface-variant leading-tight truncate">{role}</p>
       </div>
     </div>
+  );
+}
+
+function FAQItem({ q, a }: { q: string; a: string }) {
+  return (
+    <details className="group bg-surface-container-low/60 backdrop-blur-sm border border-outline-variant/20 rounded-2xl open:border-primary/40 transition-colors">
+      <summary className="cursor-pointer list-none px-6 py-5 flex items-center justify-between gap-4 font-bold text-on-surface">
+        <span>{q}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-tertiary transition-transform group-open:rotate-45 shrink-0"
+        >
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+      </summary>
+      <div className="px-6 pb-5 text-on-surface-variant leading-relaxed">{a}</div>
+    </details>
   );
 }
