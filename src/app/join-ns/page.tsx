@@ -369,31 +369,55 @@ const SPEAKERS: { name: string; role: string }[] = [
 
 const FAQS: { q: string; a: string }[] = [
   {
-    q: "How do I apply?",
-    a: "Apply through my invite at ns.com/invite/konradgnat — using the link unlocks a free first week. You'll receive a confirmation email acknowledging your application.",
+    q: "How do I apply to Network School?",
+    a: "Please apply at ns.com/invite/konradgnat — using my invite link includes a free first week. You'll receive a confirmation email acknowledging your application.",
   },
   {
-    q: "How much does it cost?",
-    a: "Membership starts at $1,500/month with a roommate. Private rooms are $3,000/month. Serviced rooms available — inquire for pricing. All tiers include meals, gym, and amenities.",
+    q: "What's the program at Network School like?",
+    a: "Live, learn, burn, earn, and have fun. Days mix talks from founders and investors, daily group workouts and healthy meals, 24/7 coworking, and a flexible social calendar with workshops, hackathons, and community events.",
   },
   {
-    q: "What's included in the membership fee?",
-    a: "Accommodation, three meals per day, 24/7 gym and coworking access, fitness classes, lectures, workshops, content studio, makerspace, and high-speed Wi-Fi. Society-as-a-service.",
+    q: "How much does it cost to attend Network School?",
+    a: "Membership starts at $1,500/month with a roommate. Private rooms are $3,000/month, and serviced rooms are available on request. Every tier is all-inclusive.",
   },
   {
-    q: "How long do people stay?",
-    a: "Stays range from one cohort (a few weeks) to many months. Many members extend after their first cohort.",
+    q: "What is included in the membership fee?",
+    a: "Accommodation, three nutritious meals a day, 24/7 gym access, fitness classes, world-class lectures, workshops, community events, 24/7 coworking, content studio, makerspace, and high-speed Wi-Fi. Society-as-a-service.",
   },
   {
-    q: "Where is Network School?",
-    a: "Forest City, Malaysia — about a 45-minute drive from Singapore. The campus is housed in a 5-star hotel right by the beach.",
+    q: "How long do people stay at Network School?",
+    a: "Stays range from a single cohort (a few weeks) to many months. Plenty of members extend after their first cohort.",
   },
   {
-    q: "Can I bring coworkers and friends?",
-    a: "Yes — startup teams come to NS to live together and build faster. Each team member needs their own application.",
+    q: "When does each Network School cohort start?",
+    a: "New cohorts start regularly throughout the year. Once you apply, the team will share the upcoming cohort calendar so you can pick the dates that work for you.",
   },
   {
-    q: "Is internet included?",
+    q: "What are the visa requirements?",
+    a: "Network School is in Forest City, Malaysia, where most nationalities receive a visa on arrival. Once you're accepted, the team will help with the specifics for your passport and intended length of stay.",
+  },
+  {
+    q: "Can I bring coworkers and friends with me?",
+    a: "Yes — startup teams regularly come to Network School to live together and build faster. Each person on your team should submit their own application.",
+  },
+  {
+    q: "Are you family friendly?",
+    a: "Many members come solo, but families are welcome on a case-by-case basis. Mention your situation in your application and the team will follow up.",
+  },
+  {
+    q: "Can we invite visitors for day trips?",
+    a: "Yes, but they will need to check in if they're using the facilities. We can figure out logistics once you're on campus.",
+  },
+  {
+    q: "Are there many different fitness activities?",
+    a: "Three group workouts a day at 7 AM, 11 AM, and 5 PM, two fully-equipped 24/7 gyms, fitness classes, sauna, ice plunge, pool, and a beach right outside. There's something for every training style.",
+  },
+  {
+    q: "Is food included in the membership?",
+    a: "Yes. Three meals a day are included — a 5-star hotel breakfast buffet plus healthy lunch and dinner curated for performance and longevity.",
+  },
+  {
+    q: "Is internet included in the membership?",
     a: "Yes. High-speed Wi-Fi throughout the campus, dedicated phone booths in the cafe for calls, and 24/7 coworking space.",
   },
 ];
