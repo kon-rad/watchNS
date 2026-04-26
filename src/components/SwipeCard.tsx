@@ -91,11 +91,21 @@ export default function SwipeCard({
       ) : (
         <>
           {video.thumbnailUrl ? (
-            <img
-              src={video.thumbnailUrl}
-              alt={video.title || "Video thumbnail"}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+            <>
+              {/* Blurred backdrop fills any letterbox space */}
+              <img
+                src={video.thumbnailUrl}
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60"
+              />
+              {/* Foreground thumbnail — preserves natural aspect ratio */}
+              <img
+                src={video.thumbnailUrl}
+                alt={video.title || "Video thumbnail"}
+                className="absolute inset-0 w-full h-full object-contain"
+              />
+            </>
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-surface-container-high to-surface-container flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="text-primary/30">
@@ -104,7 +114,7 @@ export default function SwipeCard({
             </div>
           )}
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
           {/* Play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <button
