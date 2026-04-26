@@ -83,11 +83,11 @@ export default function SwipeDeck({
   return (
     <div className="flex flex-col w-full h-full md:max-w-sm md:mx-auto">
       {/* Title + Channel info above the card */}
-      <div className="px-4 pt-2 pb-2 shrink-0">
-        <h2 className="text-base font-headline font-bold text-on-surface leading-tight line-clamp-2">
+      <div className="px-4 pt-3 pb-3 shrink-0">
+        <h2 className="text-lg font-headline font-bold text-on-surface leading-snug line-clamp-2">
           {currentVideo.title || "Untitled"}
         </h2>
-        <p className="text-sm text-on-surface-variant mt-0.5 truncate">
+        <p className="text-sm text-on-surface-variant mt-1 truncate">
           {currentVideo.creatorName}
         </p>
       </div>
