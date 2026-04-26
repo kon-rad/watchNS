@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getRandomVideo } from "@/actions/videos";
+import Footer from "@/components/Footer";
 
 export const dynamic = "force-dynamic";
 
@@ -148,6 +149,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }
