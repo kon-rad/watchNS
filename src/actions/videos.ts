@@ -2,7 +2,7 @@
 
 import { db } from "@/db";
 import { videos, creators, favorites } from "@/db/schema";
-import { eq, notInArray, sql, asc, desc } from "drizzle-orm";
+import { eq, and, notInArray, sql, asc, desc } from "drizzle-orm";
 import { getUserId } from "@/lib/user";
 
 export type VideoWithCreator = {
@@ -63,12 +63,15 @@ const videoWithCreatorSelect = {
   creatorChannelUrl: creators.channelUrl,
 };
 
+// Per-batch swipe target. Capped at the number of creators that still have
+// unseen videos, so a deck with 3 channels yields 3 cards per batch.
+const SWIPE_BATCH_SIZE = 10;
+
 export async function getVideosForSwipe(
   excludeIds: number[] = []
 ): Promise<VideoWithCreator[]> {
   const userId = await getUserId();
 
-  // Get IDs the user has already favorited
   const favoritedIds = db
     .select({ videoId: favorites.videoId })
     .from(favorites)
@@ -77,20 +80,37 @@ export async function getVideosForSwipe(
     .map((f) => f.videoId);
 
   const allExcluded = [...new Set([...excludeIds, ...favoritedIds])];
+  const exclusion = allExcluded.length > 0 ? notInArray(videos.id, allExcluded) : undefined;
 
-  let query = db
-    .select(videoWithCreatorSelect)
-    .from(videos)
-    .innerJoin(creators, eq(videos.creatorId, creators.id));
+  // Step 1: pick a random subset of creators that still have at least one
+  // unseen video. Equal-weight per creator regardless of catalog size.
+  const creatorRows = db
+    .select({ id: creators.id })
+    .from(creators)
+    .innerJoin(videos, eq(videos.creatorId, creators.id))
+    .where(exclusion)
+    .groupBy(creators.id)
+    .orderBy(sql`RANDOM()`)
+    .limit(SWIPE_BATCH_SIZE)
+    .all();
 
-  const results =
-    allExcluded.length > 0
-      ? query
-          .where(notInArray(videos.id, allExcluded))
-          .orderBy(sql`RANDOM()`)
-          .limit(10)
-          .all()
-      : query.orderBy(sql`RANDOM()`).limit(10).all();
+  // Step 2: for each picked creator, return one random unseen video.
+  const results: VideoWithCreator[] = [];
+  for (const c of creatorRows) {
+    const video = db
+      .select(videoWithCreatorSelect)
+      .from(videos)
+      .innerJoin(creators, eq(videos.creatorId, creators.id))
+      .where(
+        exclusion
+          ? and(eq(videos.creatorId, c.id), exclusion)
+          : eq(videos.creatorId, c.id)
+      )
+      .orderBy(sql`RANDOM()`)
+      .limit(1)
+      .get();
+    if (video) results.push(video);
+  }
 
   return results;
 }
