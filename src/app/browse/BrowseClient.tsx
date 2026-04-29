@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import { getAllVideos } from "@/actions/videos";
 import type { VideoWithCreator, CreatorWithStats, SortOption } from "@/actions/videos";
+import { proxyImageUrl } from "@/lib/platform";
 
 function SortButtons({
   sort,
@@ -116,7 +117,7 @@ export default function BrowseClient({
                 <div className="relative w-28 h-20 md:w-36 md:h-24 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
                   {video.thumbnailUrl ? (
                     <img
-                      src={video.thumbnailUrl}
+                      src={proxyImageUrl(video.thumbnailUrl) || undefined}
                       alt={video.title || "Video"}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                     />
@@ -198,7 +199,7 @@ export default function BrowseClient({
               <div className="flex items-center gap-4 mb-4">
                 {channel.avatarUrl ? (
                   <img
-                    src={channel.avatarUrl}
+                    src={proxyImageUrl(channel.avatarUrl) || undefined}
                     alt={channel.name}
                     className="w-14 h-14 rounded-full border-2 border-primary object-cover"
                   />

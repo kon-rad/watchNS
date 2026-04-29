@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { toggleFavorite } from "@/actions/videos";
 import type { VideoWithCreator } from "@/actions/videos";
 import ExpandableDetails from "@/components/ExpandableDetails";
-
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+import VideoEmbed from "@/components/VideoEmbed";
+import { proxyImageUrl, type Platform } from "@/lib/platform";
 
 function getPlatformLabel(platform: string) {
   switch (platform) {
@@ -86,12 +85,10 @@ export default function VideoDetailClient({
 
       {/* Video player */}
       <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-surface-container-lowest editorial-shadow">
-        <ReactPlayer
+        <VideoEmbed
           url={video.url}
+          platform={video.platform as Platform}
           controls
-          width="100%"
-          height="100%"
-          style={{ position: "absolute", top: 0, left: 0 }}
         />
       </div>
 
@@ -106,7 +103,7 @@ export default function VideoDetailClient({
           <div className="flex items-center gap-4">
             {video.creatorAvatar ? (
               <img
-                src={video.creatorAvatar}
+                src={proxyImageUrl(video.creatorAvatar) || undefined}
                 alt={video.creatorName}
                 className="w-12 h-12 rounded-full border-2 border-primary object-cover"
               />

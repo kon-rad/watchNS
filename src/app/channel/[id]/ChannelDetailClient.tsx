@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getChannelWithVideos } from "@/actions/videos";
 import type { VideoWithCreator, CreatorWithStats, SortOption } from "@/actions/videos";
 import ExpandableDetails from "@/components/ExpandableDetails";
+import { proxyImageUrl } from "@/lib/platform";
 
 function formatNumber(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
@@ -64,7 +65,7 @@ export default function ChannelDetailClient({
       <div className="flex items-center gap-6 mb-6">
         {channel.avatarUrl ? (
           <img
-            src={channel.avatarUrl}
+            src={proxyImageUrl(channel.avatarUrl) || undefined}
             alt={channel.name}
             className="w-20 h-20 rounded-full border-2 border-primary object-cover"
           />
@@ -182,7 +183,7 @@ export default function ChannelDetailClient({
             <div className="relative w-28 h-20 md:w-36 md:h-24 rounded-lg overflow-hidden flex-shrink-0 bg-surface-container">
               {video.thumbnailUrl ? (
                 <img
-                  src={video.thumbnailUrl}
+                  src={proxyImageUrl(video.thumbnailUrl) || undefined}
                   alt={video.title || "Video"}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
