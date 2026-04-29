@@ -93,11 +93,23 @@ cd REDACTED-PATH && npx tsx src/scripts/sync-channels.ts
 
 | Platform   | Initial (50 cap) | Sync (200 cap) | Notes |
 |-----------|------------------|-----------------|-------|
-| YouTube   | ~25-30 videos    | ~25-30 videos   | Limited by initial page HTML; no JS execution. Catches new uploads each run. |
+| YouTube   | ~30 videos       | up to 200       | Initial HTML carries ~30 IDs; the rest are paged via YouTube's `youtubei/v1/browse` continuation API. |
 | Instagram | Up to 12 videos  | Up to 12 videos | API returns last 12 posts from profile endpoint. |
 | TikTok    | ~10 videos       | ~10 videos      | Embed page returns ~10 video IDs. |
 
-YouTube channels with many videos will gradually get fully indexed over multiple sync runs as older videos fall off and new ones appear, though the initial HTML typically contains the most recent 25-30. For channels with hundreds of videos, full historical ingestion would require browser automation (Puppeteer/Playwright), which is not currently implemented.
+### YouTube continuation pagination
+
+YouTube's channel page only embeds ~30 videos in the initial HTML; the rest load via JavaScript using continuation tokens. We replicate that flow without a browser:
+
+1. Fetch `/videos` and parse `ytInitialData` from the page.
+2. Walk to the "Videos" tab's `richGridRenderer` and pull its `continuationCommand.token` (this avoids picking up tokens for Home/Shorts/etc.).
+3. Extract `INNERTUBE_API_KEY` and `INNERTUBE_CONTEXT_CLIENT_VERSION` from the page.
+4. POST to `https://www.youtube.com/youtubei/v1/browse?key=<API_KEY>` with `{ context, continuation }`.
+5. Each response yields ~30 more video IDs and a fresh continuation token. Loop with a 250 ms delay until the limit is reached, no progress is made, or no token comes back. Capped at 50 pages as a safety against runaway feeds.
+
+No API key is required; this is the same public Innertube endpoint yt-dlp uses. Implemented in `fetchYouTubeChannelVideoIds` (`src/lib/scrape.ts`).
+
+For Instagram and TikTok, the platform-specific endpoints we use cap out below the sync limit, so 200 is mostly a YouTube ceiling.
 
 ## Files
 
