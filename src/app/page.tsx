@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getRandomVideo } from "@/actions/videos";
 import Footer from "@/components/Footer";
+import { proxyImageUrl } from "@/lib/platform";
 
 export const dynamic = "force-dynamic";
 
@@ -48,7 +49,7 @@ export default async function HomePage() {
           >
             {randomVideo?.thumbnailUrl ? (
               <img
-                src={randomVideo.thumbnailUrl}
+                src={proxyImageUrl(randomVideo.thumbnailUrl) || undefined}
                 alt={randomVideo.title || "Featured video"}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />

@@ -82,9 +82,32 @@ export function getEmbedUrl(platform: Platform, originalUrl: string): string | n
       if (videoId) return `https://www.youtube.com/embed/${videoId}`;
     }
 
-    // TikTok and Instagram embeds are handled by react-player
+    if (platform === "instagram") {
+      const m = url.pathname.match(/^\/(reel|p|tv)\/([A-Za-z0-9_-]+)/);
+      if (m) return `https://www.instagram.com/${m[1]}/${m[2]}/embed/captioned/`;
+    }
+
+    if (platform === "tiktok") {
+      const m = url.pathname.match(/\/video\/(\d+)/);
+      if (m) return `https://www.tiktok.com/embed/v2/${m[1]}`;
+    }
+
     return originalUrl;
   } catch {
     return originalUrl;
   }
+}
+
+// Instagram's CDN sets `Cross-Origin-Resource-Policy`, so browsers block
+// `<img src="https://*.cdninstagram.com/...">` cross-origin. Route the request
+// through our own origin via /api/ig-image so the response is same-origin.
+export function proxyImageUrl(url: string | null | undefined): string | null | undefined {
+  if (!url) return url;
+  try {
+    const host = new URL(url).hostname;
+    if (host.endsWith(".cdninstagram.com") || host.endsWith(".fbcdn.net")) {
+      return `/api/ig-image?url=${encodeURIComponent(url)}`;
+    }
+  } catch {}
+  return url;
 }

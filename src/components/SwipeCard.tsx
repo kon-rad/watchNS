@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
-import dynamic from "next/dynamic";
 import type { VideoWithCreator } from "@/actions/videos";
-
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+import { proxyImageUrl, type Platform } from "@/lib/platform";
+import VideoEmbed from "@/components/VideoEmbed";
 
 const SWIPE_THRESHOLD = 100;
 
@@ -79,13 +78,11 @@ export default function SwipeCard({
       {/* Video / Thumbnail */}
       {playing ? (
         <div className="absolute inset-0">
-          <ReactPlayer
+          <VideoEmbed
             url={video.url}
+            platform={video.platform as Platform}
             playing
             controls
-            width="100%"
-            height="100%"
-            style={{ position: "absolute", top: 0, left: 0 }}
           />
         </div>
       ) : (
@@ -94,14 +91,14 @@ export default function SwipeCard({
             <>
               {/* Blurred backdrop fills any letterbox space */}
               <img
-                src={video.thumbnailUrl}
+                src={proxyImageUrl(video.thumbnailUrl) || undefined}
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-60"
               />
               {/* Foreground thumbnail — preserves natural aspect ratio */}
               <img
-                src={video.thumbnailUrl}
+                src={proxyImageUrl(video.thumbnailUrl) || undefined}
                 alt={video.title || "Video thumbnail"}
                 className="absolute inset-0 w-full h-full object-contain"
               />

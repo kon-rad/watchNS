@@ -1,5 +1,6 @@
 import { getFavoriteVideos } from "@/actions/videos";
 import Link from "next/link";
+import { proxyImageUrl } from "@/lib/platform";
 
 export default async function FavoritesPage() {
   const favorites = await getFavoriteVideos();
@@ -60,7 +61,7 @@ export default async function FavoritesPage() {
               >
                 {video.thumbnailUrl ? (
                   <img
-                    src={video.thumbnailUrl}
+                    src={proxyImageUrl(video.thumbnailUrl) || undefined}
                     alt={video.title || "Video"}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
