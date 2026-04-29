@@ -353,6 +353,134 @@ export async function scrapeInstagramVideosWithMeta(
   }
 }
 
+// Extracts the embedded ytInitialData JSON object from a YouTube channel page.
+function parseYtInitialData(html: string): unknown | null {
+  const m = html.match(/var ytInitialData = (\{[\s\S]+?\});\s*<\/script>/);
+  if (!m) return null;
+  try {
+    return JSON.parse(m[1]);
+  } catch {
+    return null;
+  }
+}
+
+// Walks ytInitialData to find the continuation token attached to the
+// Videos tab's grid (NOT Home/Shorts/Playlists/etc).
+function findVideosTabContinuation(data: unknown): string | null {
+  let result: string | null = null;
+  function walk(node: unknown, inVideosTab: boolean) {
+    if (!node || typeof node !== "object" || result) return;
+    if (Array.isArray(node)) {
+      for (const v of node) walk(v, inVideosTab);
+      return;
+    }
+    const obj = node as Record<string, unknown>;
+    if (obj.tabRenderer) {
+      const tab = obj.tabRenderer as Record<string, unknown>;
+      walk(tab.content, tab.title === "Videos");
+      return;
+    }
+    if (inVideosTab && obj.continuationItemRenderer) {
+      const cir = obj.continuationItemRenderer as Record<string, unknown>;
+      const tok =
+        ((cir.continuationEndpoint as Record<string, unknown> | undefined)
+          ?.continuationCommand as Record<string, unknown> | undefined)?.token;
+      if (typeof tok === "string") result = tok;
+      return;
+    }
+    for (const k in obj) walk(obj[k], inVideosTab);
+  }
+  walk(data, false);
+  return result;
+}
+
+// `"videoId" : "..."` appears in two shapes: minified (initial HTML, no spaces)
+// and formatted (continuation API responses, with whitespace).
+const YT_VIDEO_ID_PATTERN = /"videoId"\s*:\s*"([a-zA-Z0-9_-]{11})"/g;
+const YT_NEXT_TOKEN_PATTERN =
+  /"continuationCommand"\s*:\s*\{\s*"token"\s*:\s*"([^"]+)"/;
+
+async function fetchYouTubeChannelVideoIds(
+  channelUrl: string,
+  limit: number
+): Promise<string[]> {
+  let videosUrl = channelUrl.replace(/\/+$/, "");
+  if (!videosUrl.endsWith("/videos")) videosUrl += "/videos";
+
+  const initialRes = await fetch(videosUrl, {
+    signal: AbortSignal.timeout(15000),
+    headers: BROWSER_HEADERS,
+  });
+  if (!initialRes.ok) return [];
+  const html = await initialRes.text();
+
+  const videoIds = new Set<string>();
+  for (const m of html.matchAll(YT_VIDEO_ID_PATTERN)) {
+    videoIds.add(m[1]);
+    if (videoIds.size >= limit) break;
+  }
+  if (videoIds.size >= limit) {
+    return [...videoIds]
+      .slice(0, limit)
+      .map((id) => `https://www.youtube.com/watch?v=${id}`);
+  }
+
+  const apiKey = html.match(/"INNERTUBE_API_KEY":"([^"]+)"/)?.[1];
+  const clientVersion =
+    html.match(/"INNERTUBE_CONTEXT_CLIENT_VERSION":"([^"]+)"/)?.[1] ||
+    "2.20240101.00.00";
+  let continuation: string | null = null;
+  const data = parseYtInitialData(html);
+  if (data) continuation = findVideosTabContinuation(data);
+  if (!apiKey || !continuation) {
+    return [...videoIds].map((id) => `https://www.youtube.com/watch?v=${id}`);
+  }
+
+  // Cap pages so a misbehaving feed can't loop forever.
+  const MAX_PAGES = 50;
+  for (let page = 0; page < MAX_PAGES; page++) {
+    if (!continuation || videoIds.size >= limit) break;
+
+    const browseRes: Response = await fetch(
+      `https://www.youtube.com/youtubei/v1/browse?key=${apiKey}`,
+      {
+        method: "POST",
+        signal: AbortSignal.timeout(15000),
+        headers: {
+          ...BROWSER_HEADERS,
+          "Content-Type": "application/json",
+          Origin: "https://www.youtube.com",
+          Referer: videosUrl,
+        },
+        body: JSON.stringify({
+          context: {
+            client: { hl: "en", clientName: "WEB", clientVersion },
+          },
+          continuation,
+        }),
+      }
+    );
+    if (!browseRes.ok) break;
+    const body: string = await browseRes.text();
+
+    const before = videoIds.size;
+    for (const m of body.matchAll(YT_VIDEO_ID_PATTERN)) {
+      videoIds.add(m[1]);
+      if (videoIds.size >= limit) break;
+    }
+    if (videoIds.size === before) break;
+
+    const next: RegExpMatchArray | null = body.match(YT_NEXT_TOKEN_PATTERN);
+    continuation = next ? next[1] : null;
+
+    await new Promise((r) => setTimeout(r, 250));
+  }
+
+  return [...videoIds]
+    .slice(0, limit)
+    .map((id) => `https://www.youtube.com/watch?v=${id}`);
+}
+
 export async function scrapeChannelVideoUrls(
   platform: Platform,
   channelUrl: string,
@@ -360,35 +488,7 @@ export async function scrapeChannelVideoUrls(
 ): Promise<string[]> {
   try {
     if (platform === "youtube") {
-      let videosUrl = channelUrl.replace(/\/+$/, "");
-      if (!videosUrl.endsWith("/videos")) {
-        videosUrl += "/videos";
-      }
-
-      const res = await fetch(videosUrl, {
-        signal: AbortSignal.timeout(15000),
-        headers: BROWSER_HEADERS,
-      });
-      if (!res.ok) return [];
-      const html = await res.text();
-
-      const videoIds = new Set<string>();
-      const patterns = [
-        /\/watch\?v=([a-zA-Z0-9_-]{11})/g,
-        /"videoId":"([a-zA-Z0-9_-]{11})"/g,
-      ];
-
-      for (const pattern of patterns) {
-        for (const match of html.matchAll(pattern)) {
-          videoIds.add(match[1]);
-          if (videoIds.size >= limit) break;
-        }
-        if (videoIds.size >= limit) break;
-      }
-
-      return [...videoIds]
-        .slice(0, limit)
-        .map((id) => `https://www.youtube.com/watch?v=${id}`);
+      return await fetchYouTubeChannelVideoIds(channelUrl, limit);
     }
 
     if (platform === "instagram") {
