@@ -35,6 +35,10 @@ const IG_HEADERS = {
   "User-Agent":
     "Instagram 275.0.0.27.98 Android (33/13; 420dpi; 1080x2400; Google/google; Pixel 7; panther; panther; en_US; 458229258)",
   "X-IG-App-ID": "936619743392459",
+  // Node's undici sends `Sec-Fetch-Site: cross-site` by default, which IG's edge
+  // rejects with `400 SecFetch Policy violation`. Force same-origin to match
+  // what their in-browser client sends.
+  "Sec-Fetch-Site": "same-origin",
 };
 
 async function fetchOembed(endpoint: string): Promise<Record<string, string> | null> {
