@@ -59,17 +59,18 @@ npx tsx src/scripts/sync-channels.ts --channel 8
 
 ## Cron Job Setup (Server)
 
-The cron job is configured on the DigitalOcean server (`ssh root@REDACTED-HOST`):
+The cron job is configured on the production server under the app user's
+crontab (server connection details are in the gitignored `DEPLOYMENT.local.md`):
 
 ```cron
-0 */5 * * * cd REDACTED-PATH && /usr/bin/npx tsx src/scripts/sync-channels.ts >> /var/log/watchns-sync.log 2>&1
+0 */5 * * * cd <app-dir> && /usr/bin/npx tsx src/scripts/sync-channels.ts >> <app-dir>/watchns-sync.log 2>&1
 ```
 
 This runs at minute 0 of every 5th hour (00:00, 05:00, 10:00, 15:00, 20:00 UTC).
 
 ### Log file
 
-Sync logs are appended to `/var/log/watchns-sync.log`. Each run logs:
+Sync logs are appended to `watchns-sync.log` in the app directory. Each run logs:
 - Timestamp for every action
 - Number of existing videos per channel
 - Number of videos found from scrape
@@ -80,13 +81,13 @@ Sync logs are appended to `/var/log/watchns-sync.log`. Each run logs:
 
 ```bash
 # Check last sync run
-tail -50 /var/log/watchns-sync.log
+tail -50 watchns-sync.log
 
 # Check cron is scheduled
 crontab -l | grep watchns
 
-# Manually trigger a sync
-cd REDACTED-PATH && npx tsx src/scripts/sync-channels.ts
+# Manually trigger a sync (from the app directory)
+npx tsx src/scripts/sync-channels.ts
 ```
 
 ## Platform-Specific Scraping Limits

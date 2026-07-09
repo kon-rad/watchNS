@@ -2,10 +2,19 @@
 
 ## Deployment
 
-- Domain: https://watchns.world (SSL via Let's Encrypt — issue with certbot on the new server once DNS is cut over)
-- Server: `ssh -i ~/.ssh/REDACTED-KEY agents@REDACTED-HOST` (DigitalOcean)
-- App directory on server: `~/companies/watchns` (`REDACTED-PATH/companies/watchns`)
-- Process manager: pm2 (process name: `watchns`, port 3005 — 3001 is taken by Augmi on this box)
-- Reverse proxy: nginx (`/etc/nginx/sites-enabled/watchns.conf` must `proxy_pass http://127.0.0.1:3005;`; editing it + `nginx -t && systemctl reload nginx` needs root)
-- Database: SQLite at `watchns.db` in the app dir (gitignored — not in the repo; upload/back up manually)
-- Deploy: push to origin, then `ssh -i ~/.ssh/REDACTED-KEY agents@REDACTED-HOST`, `cd ~/companies/watchns`, run `bash deploy.sh`
+Production is a Next.js app behind nginx, managed by pm2 (process `watchns`),
+served over HTTPS via Let's Encrypt (auto-renews). The database is SQLite
+(`watchns.db`) in the app directory — gitignored, never committed; back it up
+and migrate it manually.
+
+**Server connection details** (host, SSH user + key, app path, port) live in
+`DEPLOYMENT.local.md`, which is gitignored and intentionally kept out of this
+public repo.
+
+**To deploy:**
+1. Push changes to `origin/main`.
+2. SSH into the server and `cd` to the app directory (see `DEPLOYMENT.local.md`).
+3. Run `bash deploy.sh` — pulls `main`, installs deps, runs `drizzle-kit push`,
+   builds, and (re)starts the pm2 process.
+
+nginx, SSL, and pm2 boot-persistence changes require root — see `DEPLOYMENT.local.md`.
