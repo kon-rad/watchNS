@@ -40,6 +40,17 @@ export default async function HomePage() {
             >
               Watch Now
             </Link>
+            <Link
+              href="/comics"
+              className="inline-flex items-center gap-2 bg-surface-container-high text-on-surface border border-outline-variant/30 px-10 py-5 rounded-full text-lg font-bold hover:bg-surface-bright/50 hover:scale-105 transition-all"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="12" y1="3" x2="12" y2="21" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+              </svg>
+              Make a Comic
+            </Link>
           </div>
         </div>
         <div className="lg:w-5/12 relative">

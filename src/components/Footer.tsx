@@ -142,6 +142,12 @@ export default function Footer() {
               </svg>
             </FooterIconLink>
             <Link
+              href="/comics"
+              className="px-3 py-1.5 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors"
+            >
+              Comics
+            </Link>
+            <Link
               href="/join-ns"
               className="px-3 py-1.5 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors"
             >

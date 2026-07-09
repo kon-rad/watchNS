@@ -42,6 +42,12 @@ export default function TopNav() {
             Favorites
           </Link>
           <Link
+            href="/comics"
+            className="text-on-surface font-headline tracking-tight font-bold hover:bg-surface-bright/40 transition-colors px-3 py-1 rounded-md"
+          >
+            Comics
+          </Link>
+          <Link
             href="/join-ns"
             className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-tertiary font-headline tracking-tight font-black hover:scale-105 transition-transform px-3 py-1"
           >

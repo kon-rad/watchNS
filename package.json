@@ -14,6 +14,7 @@
   "dependencies": {
     "@fontsource/be-vietnam-pro": "^5.2.8",
     "@fontsource/plus-jakarta-sans": "^5.2.8",
+    "@google/genai": "^2.10.0",
     "better-sqlite3": "^12.9.0",
     "drizzle-orm": "^0.45.2",
     "next": "16.2.4",

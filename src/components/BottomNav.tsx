@@ -8,6 +8,7 @@ const navItems = [
   { href: "/swipe", label: "Swipe", icon: "swipe" },
   { href: "/browse", label: "Browse", icon: "browse" },
   { href: "/favorites", label: "Favorites", icon: "heart" },
+  { href: "/comics", label: "Comics", icon: "comic" },
   { href: "/join-ns", label: "Join NS", icon: "sparkle" },
 ];
 
@@ -34,6 +35,15 @@ function NavIcon({ icon, filled }: { icon: string; filled: boolean }) {
         <rect x="14" y="3" width="7" height="7" />
         <rect x="14" y="14" width="7" height="7" />
         <rect x="3" y="14" width="7" height="7" />
+      </svg>
+    );
+  }
+  if (icon === "comic") {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={filled ? "2.5" : "2"} strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <line x1="12" y1="3" x2="12" y2="21" />
+        <line x1="3" y1="12" x2="21" y2="12" />
       </svg>
     );
   }
