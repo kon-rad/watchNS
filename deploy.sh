@@ -3,7 +3,7 @@ set -e
 
 APP_DIR="$HOME/companies/watchns"
 APP_NAME="watchns"
-PORT=3003
+PORT=3005
 
 echo "==> Deploying WatchNS..."
 
@@ -22,10 +22,12 @@ echo "==> Building app..."
 npm run build
 
 echo "==> (Re)starting pm2 process..."
+# Run the Next.js binary directly (not via `npm start`) so pm2 manages the
+# server process itself — otherwise restarts orphan the child and leak the port.
 if pm2 describe "$APP_NAME" > /dev/null 2>&1; then
   pm2 restart "$APP_NAME" --update-env
 else
-  PORT="$PORT" pm2 start npm --name "$APP_NAME" -- start
+  pm2 start node_modules/next/dist/bin/next --name "$APP_NAME" -- start -p "$PORT"
   pm2 save
 fi
 
