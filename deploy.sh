@@ -3,7 +3,7 @@ set -e
 
 APP_DIR="$HOME/companies/watchns"
 APP_NAME="watchns"
-PORT=3001
+PORT=3003
 
 echo "==> Deploying WatchNS..."
 
