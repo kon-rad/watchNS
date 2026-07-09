@@ -9,8 +9,12 @@ echo "==> Deploying WatchNS..."
 
 cd "$APP_DIR"
 
-echo "==> Pulling latest changes..."
-git pull origin main
+echo "==> Syncing to origin/main..."
+# Hard-reset to the remote so the deploy target always matches origin exactly
+# (survives force-pushes / history rewrites; only affects tracked files, so the
+# gitignored watchns.db and node_modules are untouched).
+git fetch origin
+git reset --hard origin/main
 
 echo "==> Installing dependencies..."
 npm install --production=false
